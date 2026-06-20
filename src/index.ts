@@ -1,4 +1,3 @@
-// ─── Types ────────────────────────────────────────────────────────────────────
 export type {
   TgUser,
   TgWebApp,
@@ -31,48 +30,27 @@ export type {
   WebAppEventType,
 } from './types';
 
-// ─── Core Utilities ───────────────────────────────────────────────────────────
 export {
-  // WebApp access
   getWebApp,
   isInTelegram,
   isVersionAtLeast,
-  // Language
-  tgLangToTmdb,
-  tgLangToUi,
-  isRtlLang,
-  RTL_LANGS,
-  SUPPORTED_LANGS,
-  // User helpers
   getUserAvatarUrl,
   getUserIdentifier,
   getUserDisplayName,
   getUserInfoWithAvatar,
   getRawUserData,
-  // Navigation
   openExternalLink,
   openTelegramLink,
-  // Haptic shortcuts
   haptic,
-  // Cloud storage promises
   cloudStorage,
-  // Dialog promises
   dialog,
-  // Clipboard
   readClipboard,
-  // Invoice
   openInvoice,
-  // QR
   scanQr,
-  // Biometric promises
   biometric,
-  // Location promises
   location,
 } from './core';
 
-export type { Language } from './core';
-
-// ─── Hooks ────────────────────────────────────────────────────────────────────
 export {
   useTelegramWebApp,
   useTelegramUser,
@@ -97,7 +75,6 @@ export {
   useTelegramStartParam,
 } from './hooks';
 
-// ─── Providers ────────────────────────────────────────────────────────────────
 export {
   TelegramProvider,
   useTelegram,
