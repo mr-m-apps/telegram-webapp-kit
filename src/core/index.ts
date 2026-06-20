@@ -1,6 +1,5 @@
 import type { TgUser, TgWebApp } from '../types';
 
-// ─── WebApp Access ────────────────────────────────────────────────────────────
 export function getWebApp(): TgWebApp | null {
   if (typeof window === 'undefined') return null;
   return window.Telegram?.WebApp ?? null;
@@ -15,7 +14,6 @@ export function isVersionAtLeast(version: string): boolean {
   return getWebApp()?.isVersionAtLeast(version) ?? false;
 }
 
-// ─── Navigation Helpers ───────────────────────────────────────────────────────
 export function openExternalLink(url: string, tryInstantView = false) {
   const wa = getWebApp();
   if (wa?.openLink) {
@@ -34,7 +32,6 @@ export function openTelegramLink(url: string) {
   }
 }
 
-// ─── User Helpers ─────────────────────────────────────────────────────────────
 export function getUserAvatarUrl(
   user?: TgUser,
   defaultAvatarUrl = 'https://via.placeholder.com/100x100?text=No+Avatar'
@@ -86,7 +83,6 @@ export function getRawUserData(): TgUser | null {
   return wa?.initDataUnsafe?.user ?? null;
 }
 
-// ─── Haptic Shortcuts ─────────────────────────────────────────────────────────
 export const haptic = {
   light: () => getWebApp()?.HapticFeedback?.impactOccurred('light'),
   medium: () => getWebApp()?.HapticFeedback?.impactOccurred('medium'),
@@ -99,7 +95,6 @@ export const haptic = {
   selection: () => getWebApp()?.HapticFeedback?.selectionChanged(),
 };
 
-// ─── Cloud Storage Promises ───────────────────────────────────────────────────
 export const cloudStorage = {
   setItem: (key: string, value: string): Promise<boolean> =>
     new Promise((resolve, reject) => {
@@ -152,7 +147,6 @@ export const cloudStorage = {
     }),
 };
 
-// ─── Dialog Promises ──────────────────────────────────────────────────────────
 export const dialog = {
   alert: (message: string): Promise<void> =>
     new Promise((resolve) => {
@@ -176,7 +170,6 @@ export const dialog = {
     }),
 };
 
-// ─── Clipboard Promises ───────────────────────────────────────────────────────
 export function readClipboard(): Promise<string> {
   return new Promise((resolve, reject) => {
     const wa = getWebApp();
@@ -185,7 +178,6 @@ export function readClipboard(): Promise<string> {
   });
 }
 
-// ─── Invoice ──────────────────────────────────────────────────────────────────
 export function openInvoice(url: string): Promise<'paid' | 'cancelled' | 'failed' | 'pending'> {
   return new Promise((resolve, reject) => {
     const wa = getWebApp();
@@ -194,7 +186,6 @@ export function openInvoice(url: string): Promise<'paid' | 'cancelled' | 'failed
   });
 }
 
-// ─── QR Scanner ───────────────────────────────────────────────────────────────
 export function scanQr(text?: string): Promise<string> {
   return new Promise((resolve, reject) => {
     const wa = getWebApp();
@@ -206,7 +197,6 @@ export function scanQr(text?: string): Promise<string> {
   });
 }
 
-// ─── Biometric Promise Wrappers ───────────────────────────────────────────────
 export const biometric = {
   init: (): Promise<void> =>
     new Promise((resolve, reject) => {
@@ -230,7 +220,6 @@ export const biometric = {
     }),
 };
 
-// ─── Location Promise Wrappers ────────────────────────────────────────────────
 export const location = {
   init: (): Promise<void> =>
     new Promise((resolve, reject) => {
@@ -256,5 +245,5 @@ export const location = {
           resolve(location);
         }
       });
-    }),
+   }),
 };
