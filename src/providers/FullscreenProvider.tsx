@@ -12,7 +12,6 @@ import {
 import { getWebApp } from '../core';
 import type { SafeAreaInset } from '../types';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
 interface FullscreenError {
   error: 'UNSUPPORTED' | 'ALREADY_FULLSCREEN';
 }
@@ -32,7 +31,6 @@ interface FullscreenContextValue {
 
 const DEFAULT_INSET: SafeAreaInset = { top: 0, bottom: 0, left: 0, right: 0 };
 
-// ─── CSS Variable Helpers ─────────────────────────────────────────────────────
 const SAFE_AREA_VARS = {
   top: '--tg-safe-area-inset-top',
   bottom: '--tg-safe-area-inset-bottom',
@@ -55,7 +53,6 @@ function applySafeAreaVars(inset: SafeAreaInset, vars: typeof SAFE_AREA_VARS | t
   root.setProperty(vars.right, `${inset.right}px`);
 }
 
-// ─── Context ──────────────────────────────────────────────────────────────────
 const FullscreenContext = createContext<FullscreenContextValue | null>(null);
 
 export function useFullscreen(): FullscreenContextValue {
@@ -64,11 +61,8 @@ export function useFullscreen(): FullscreenContextValue {
   return ctx;
 }
 
-// ─── Provider ─────────────────────────────────────────────────────────────────
 export interface FullscreenProviderOptions {
-  /** localStorage key to persist user preference */
   storageKey?: string;
-  /** Auto-restore fullscreen preference on mount */
   persistPreference?: boolean;
 }
 
