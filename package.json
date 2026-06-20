@@ -29,7 +29,15 @@
     "nextjs",
     "hooks"
   ],
-  "author": "",
+  "author": "mr-m-apps",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mr-m-apps/telegram-webapp-kit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mr-m-apps/telegram-webapp-kit/issues"
+  },
+  "homepage": "https://github.com/mr-m-apps/telegram-webapp-kit#readme",
   "license": "MIT",
   "peerDependencies": {
     "react": ">=18.0.0",
@@ -37,9 +45,9 @@
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
-    "@types/node": "26.0.0", 
+    "@types/node": "^20.0.0",
     "tsup": "^8.0.0",
-    "typescript": "^8.0.0"
+    "typescript": "^5.0.0"
   },
   "sideEffects": false
 }
