@@ -15,67 +15,6 @@ export function isVersionAtLeast(version: string): boolean {
   return getWebApp()?.isVersionAtLeast(version) ?? false;
 }
 
-// ─── Language Helpers ─────────────────────────────────────────────────────────
-export function tgLangToTmdb(code?: string): string {
-  if (!code) return 'en-US';
-  const base = code.toLowerCase().split('-')[0];
-  const map: Record<string, string> = {
-    en: 'en-US', ar: 'ar-SA', es: 'es-ES', fr: 'fr-FR', de: 'de-DE',
-    it: 'it-IT', pt: 'pt-BR', ru: 'ru-RU', zh: 'zh-CN', ja: 'ja-JP',
-    ko: 'ko-KR', tr: 'tr-TR', hi: 'hi-IN', id: 'id-ID', nl: 'nl-NL',
-    pl: 'pl-PL', sv: 'sv-SE', uk: 'uk-UA', vi: 'vi-VN', fa: 'fa-IR',
-    he: 'he-IL', cs: 'cs-CZ', da: 'da-DK', fi: 'fi-FI', hu: 'hu-HU',
-    nb: 'nb-NO', ro: 'ro-RO', sk: 'sk-SK', th: 'th-TH', ms: 'ms-MY',
-  };
-  return map[base] ?? 'en-US';
-}
-
-export function tgLangToUi(code?: string): string {
-  if (!code) return 'en';
-  const base = code.toLowerCase().split('-')[0];
-  const supported = [
-    'en', 'ar', 'es', 'fr', 'de', 'it', 'pt', 'ru', 'zh', 'ja',
-    'ko', 'tr', 'hi', 'id', 'nl', 'pl', 'sv', 'uk', 'vi', 'fa',
-    'he', 'cs', 'da', 'fi', 'hu', 'nb', 'ro', 'sk', 'th', 'ms',
-  ];
-  return supported.includes(base) ? base : 'en';
-}
-
-// ─── RTL ──────────────────────────────────────────────────────────────────────
-export const RTL_LANGS = new Set(['ar', 'fa', 'he', 'ur', 'yi', 'ug', 'ku']);
-
-export function isRtlLang(lang?: string): boolean {
-  if (!lang) return false;
-  return RTL_LANGS.has(lang.toLowerCase().split('-')[0]);
-}
-
-// ─── Supported Languages ──────────────────────────────────────────────────────
-export const SUPPORTED_LANGS = [
-  { code: 'en', countryCode: 'us', name: 'English', flag: 'https://raw.githubusercontent.com/mr-m-apps/icons/refs/heads/main/flags/us.svg' },
-  { code: 'ar', countryCode: 'sa', name: 'العربية', flag: 'https://raw.githubusercontent.com/mr-m-apps/icons/refs/heads/main/flags/sa.svg' },
-  { code: 'es', countryCode: 'es', name: 'Español', flag: 'https://raw.githubusercontent.com/mr-m-apps/icons/refs/heads/main/flags/es.svg' },
-  { code: 'fr', countryCode: 'fr', name: 'Français', flag: 'https://raw.githubusercontent.com/mr-m-apps/icons/refs/heads/main/flags/fr.svg' },
-  { code: 'de', countryCode: 'de', name: 'Deutsch', flag: 'https://raw.githubusercontent.com/mr-m-apps/icons/refs/heads/main/flags/de.svg' },
-  { code: 'it', countryCode: 'it', name: 'Italiano', flag: 'https://raw.githubusercontent.com/mr-m-apps/icons/refs/heads/main/flags/it.svg' },
-  { code: 'pt', countryCode: 'pt', name: 'Português', flag: 'https://raw.githubusercontent.com/mr-m-apps/icons/refs/heads/main/flags/pt.svg' },
-  { code: 'ru', countryCode: 'ru', name: 'Русский', flag: 'https://raw.githubusercontent.com/mr-m-apps/icons/refs/heads/main/flags/ru.svg' },
-  { code: 'zh', countryCode: 'cn', name: '中文', flag: 'https://raw.githubusercontent.com/mr-m-apps/icons/refs/heads/main/flags/cn.svg' },
-  { code: 'ja', countryCode: 'jp', name: '日本語', flag: 'https://raw.githubusercontent.com/mr-m-apps/icons/refs/heads/main/flags/jp.svg' },
-  { code: 'ko', countryCode: 'kr', name: '한국어', flag: 'https://raw.githubusercontent.com/mr-m-apps/icons/refs/heads/main/flags/kr.svg' },
-  { code: 'tr', countryCode: 'tr', name: 'Türkçe', flag: 'https://raw.githubusercontent.com/mr-m-apps/icons/refs/heads/main/flags/tr.svg' },
-  { code: 'hi', countryCode: 'in', name: 'हिन्दी', flag: 'https://raw.githubusercontent.com/mr-m-apps/icons/refs/heads/main/flags/in.svg' },
-  { code: 'id', countryCode: 'id', name: 'Indonesia', flag: 'https://raw.githubusercontent.com/mr-m-apps/icons/refs/heads/main/flags/id.svg' },
-  { code: 'nl', countryCode: 'nl', name: 'Nederlands', flag: 'https://raw.githubusercontent.com/mr-m-apps/icons/refs/heads/main/flags/nl.svg' },
-  { code: 'pl', countryCode: 'pl', name: 'Polski', flag: 'https://raw.githubusercontent.com/mr-m-apps/icons/refs/heads/main/flags/pl.svg' },
-  { code: 'sv', countryCode: 'se', name: 'Svenska', flag: 'https://raw.githubusercontent.com/mr-m-apps/icons/refs/heads/main/flags/se.svg' },
-  { code: 'uk', countryCode: 'ua', name: 'Українська', flag: 'https://raw.githubusercontent.com/mr-m-apps/icons/refs/heads/main/flags/ua.svg' },
-  { code: 'vi', countryCode: 'vn', name: 'Tiếng Việt', flag: 'https://raw.githubusercontent.com/mr-m-apps/icons/refs/heads/main/flags/vn.svg' },
-  { code: 'fa', countryCode: 'ir', name: 'فارسی', flag: 'https://raw.githubusercontent.com/mr-m-apps/icons/refs/heads/main/flags/ir.svg' },
-  { code: 'he', countryCode: 'il', name: 'עברית', flag: 'https://raw.githubusercontent.com/mr-m-apps/icons/refs/heads/main/flags/il.svg' },
-] as const;
-
-export type Language = (typeof SUPPORTED_LANGS)[number];
-
 // ─── Navigation Helpers ───────────────────────────────────────────────────────
 export function openExternalLink(url: string, tryInstantView = false) {
   const wa = getWebApp();
