@@ -4,26 +4,16 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { getWebApp } from '../core';
 import type { TgUser, TgWebApp, WebAppEventType } from '../types';
 
-// ─── useTelegram ──────────────────────────────────────────────────────────────
-/**
- * Returns the raw Telegram WebApp instance.
- * Null on server or outside Telegram.
- */
 export function useTelegramWebApp(): TgWebApp | null {
   const [wa, setWa] = useState<TgWebApp | null>(null);
   useEffect(() => { setWa(getWebApp()); }, []);
   return wa;
 }
 
-// ─── useTelegramUser ──────────────────────────────────────────────────────────
 export function useTelegramUser(): TgUser | null {
   return getWebApp()?.initDataUnsafe?.user ?? null;
 }
 
-// ─── useTelegramEvent ─────────────────────────────────────────────────────────
-/**
- * Subscribe to any Telegram WebApp event.
- */
 export function useTelegramEvent(
   eventType: WebAppEventType | string,
   handler: (...args: unknown[]) => void
@@ -40,11 +30,6 @@ export function useTelegramEvent(
   }, [eventType]);
 }
 
-// ─── useTelegramBackButton ────────────────────────────────────────────────────
-/**
- * Automatically shows/hides the Telegram Back Button based on pathname.
- * Pass `onBack` to override default browser history back behavior.
- */
 export function useTelegramBackButton(options?: {
   pathname?: string;
   onBack?: () => void;
@@ -79,10 +64,6 @@ export function useTelegramBackButton(options?: {
   }, [pathname, onBack, hideOnRoot]);
 }
 
-// ─── useTelegramMainButton ────────────────────────────────────────────────────
-/**
- * Control the Telegram Main Button declaratively.
- */
 export function useTelegramMainButton(options: {
   text: string;
   onClick: () => void;
@@ -120,7 +101,6 @@ export function useTelegramMainButton(options: {
   }, [text, isVisible, isActive, color, textColor, hasShineEffect, showProgress]);
 }
 
-// ─── useTelegramSecondaryButton ───────────────────────────────────────────────
 export function useTelegramSecondaryButton(options: {
   text: string;
   onClick: () => void;
@@ -154,7 +134,6 @@ export function useTelegramSecondaryButton(options: {
   }, [text, isVisible, isActive, position, color, textColor]);
 }
 
-// ─── useTelegramSettingsButton ────────────────────────────────────────────────
 export function useTelegramSettingsButton(onSettings: () => void) {
   const onSettingsRef = useRef(onSettings);
   onSettingsRef.current = onSettings;
@@ -174,7 +153,6 @@ export function useTelegramSettingsButton(onSettings: () => void) {
   }, []);
 }
 
-// ─── useHapticFeedback ────────────────────────────────────────────────────────
 export function useHapticFeedback() {
   return {
     impact: useCallback((style: 'light' | 'medium' | 'heavy' | 'rigid' | 'soft' = 'medium') => {
@@ -189,7 +167,6 @@ export function useHapticFeedback() {
   };
 }
 
-// ─── useTelegramTheme ─────────────────────────────────────────────────────────
 export function useTelegramTheme() {
   const [colorScheme, setColorScheme] = useState<'light' | 'dark'>(
     () => getWebApp()?.colorScheme ?? 'dark'
@@ -208,7 +185,6 @@ export function useTelegramTheme() {
   return { colorScheme, themeParams, isDark: colorScheme === 'dark' };
 }
 
-// ─── useTelegramViewport ──────────────────────────────────────────────────────
 export function useTelegramViewport() {
   const [viewport, setViewport] = useState(() => ({
     height: getWebApp()?.viewportHeight ?? 0,
@@ -231,7 +207,6 @@ export function useTelegramViewport() {
   return { ...viewport, expand };
 }
 
-// ─── useTelegramFullscreen ────────────────────────────────────────────────────
 export function useTelegramFullscreen() {
   const [isFullscreen, setIsFullscreen] = useState(
     () => Boolean(getWebApp()?.isFullscreen)
@@ -266,7 +241,6 @@ export function useTelegramFullscreen() {
   return { isFullscreen, error, enter, exit, toggle };
 }
 
-// ─── useSafeArea ──────────────────────────────────────────────────────────────
 export function useSafeArea() {
   const [safeArea, setSafeArea] = useState(
     () => getWebApp()?.safeAreaInset ?? { top: 0, bottom: 0, left: 0, right: 0 }
@@ -288,7 +262,6 @@ export function useSafeArea() {
   return { safeArea, contentSafeArea };
 }
 
-// ─── useCloudStorage ──────────────────────────────────────────────────────────
 export function useCloudStorage() {
   const setItem = useCallback((key: string, value: string): Promise<boolean> =>
     new Promise((resolve, reject) => {
@@ -338,7 +311,6 @@ export function useCloudStorage() {
   return { setItem, getItem, getItems, removeItem, getKeys };
 }
 
-// ─── useAccelerometer ─────────────────────────────────────────────────────────
 export function useAccelerometer(options?: { refreshRate?: number; autoStart?: boolean }) {
   const { refreshRate = 100, autoStart = false } = options ?? {};
   const [data, setData] = useState({ x: 0, y: 0, z: 0 });
@@ -368,7 +340,6 @@ export function useAccelerometer(options?: { refreshRate?: number; autoStart?: b
   return { ...data, isStarted, start, stop };
 }
 
-// ─── useGyroscope ─────────────────────────────────────────────────────────────
 export function useGyroscope(options?: { refreshRate?: number; autoStart?: boolean }) {
   const { refreshRate = 100, autoStart = false } = options ?? {};
   const [data, setData] = useState({ x: 0, y: 0, z: 0 });
@@ -398,7 +369,6 @@ export function useGyroscope(options?: { refreshRate?: number; autoStart?: boole
   return { ...data, isStarted, start, stop };
 }
 
-// ─── useDeviceOrientation ─────────────────────────────────────────────────────
 export function useDeviceOrientation(options?: { refreshRate?: number; needAbsolute?: boolean; autoStart?: boolean }) {
   const { refreshRate = 100, needAbsolute = false, autoStart = false } = options ?? {};
   const [data, setData] = useState({ alpha: 0, beta: 0, gamma: 0, absolute: false });
@@ -433,7 +403,6 @@ export function useDeviceOrientation(options?: { refreshRate?: number; needAbsol
   return { ...data, isStarted, start, stop };
 }
 
-// ─── useBiometric ─────────────────────────────────────────────────────────────
 export function useBiometric() {
   const [isInited, setIsInited] = useState(false);
   const [isAvailable, setIsAvailable] = useState(false);
@@ -476,7 +445,6 @@ export function useBiometric() {
   return { isInited, isAvailable, biometricType, init, requestAccess, authenticate };
 }
 
-// ─── useLocation ──────────────────────────────────────────────────────────────
 export function useLocation() {
   const [isAvailable, setIsAvailable] = useState(false);
   const [isGranted, setIsGranted] = useState(false);
@@ -516,7 +484,6 @@ export function useLocation() {
   return { isAvailable, isGranted, init, getLocation, openSettings };
 }
 
-// ─── useHomeScreen ────────────────────────────────────────────────────────────
 export function useHomeScreen() {
   const addToHomeScreen = useCallback(() => {
     getWebApp()?.addToHomeScreen?.();
@@ -532,7 +499,6 @@ export function useHomeScreen() {
   return { addToHomeScreen, checkStatus };
 }
 
-// ─── useIsActive ──────────────────────────────────────────────────────────────
 export function useIsActive(): boolean {
   const [isActive, setIsActive] = useState(() => Boolean(getWebApp()?.isActive));
   useTelegramEvent('activated', () => setIsActive(true));
@@ -540,7 +506,6 @@ export function useIsActive(): boolean {
   return isActive;
 }
 
-// ─── useTelegramStartParam ────────────────────────────────────────────────────
 export function useTelegramStartParam(): string | null {
   return getWebApp()?.initDataUnsafe?.start_param ?? null;
 }
