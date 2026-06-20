@@ -1,4 +1,3 @@
-// ─── Telegram User ───────────────────────────────────────────────────────────
 export interface TgUser {
   id: number;
   first_name?: string;
@@ -11,7 +10,6 @@ export interface TgUser {
   added_to_attachment_menu?: boolean;
 }
 
-// ─── Theme ───────────────────────────────────────────────────────────────────
 export interface TgThemeParams {
   bg_color?: string;
   text_color?: string;
@@ -30,7 +28,6 @@ export interface TgThemeParams {
   destructive_text_color?: string;
 }
 
-// ─── Buttons ─────────────────────────────────────────────────────────────────
 export interface BottomButtonParams {
   text?: string;
   color?: string;
@@ -88,7 +85,6 @@ export interface BackButton {
   offClick: (cb: () => void) => void;
 }
 
-// ─── Hardware ─────────────────────────────────────────────────────────────────
 export interface HapticFeedback {
   impactOccurred: (style: 'light' | 'medium' | 'heavy' | 'rigid' | 'soft') => void;
   notificationOccurred: (type: 'error' | 'success' | 'warning') => void;
@@ -123,7 +119,6 @@ export interface Gyroscope {
   stop: (callback?: (error?: Error) => void) => void;
 }
 
-// ─── Storage ──────────────────────────────────────────────────────────────────
 export interface CloudStorage {
   setItem: (key: string, value: string, callback?: (error: Error | null, success: boolean) => void) => void;
   getItem: (key: string, callback: (error: Error | null, value: string) => void) => void;
@@ -133,7 +128,6 @@ export interface CloudStorage {
   getKeys: (callback: (error: Error | null, keys: string[]) => void) => void;
 }
 
-// ─── Location ────────────────────────────────────────────────────────────────
 export interface LocationData {
   latitude: number;
   longitude: number;
@@ -156,7 +150,6 @@ export interface LocationManager {
   openSettings: () => void;
 }
 
-// ─── Biometric ───────────────────────────────────────────────────────────────
 export interface BiometricRequestAccessParams {
   reason?: string;
 }
@@ -180,7 +173,6 @@ export interface BiometricManager {
   openSettings: () => void;
 }
 
-// ─── Contact & Chat ───────────────────────────────────────────────────────────
 export interface ChatAdministratorRights {
   can_manage_chat?: boolean;
   can_change_info?: boolean;
@@ -215,7 +207,6 @@ export interface RequestChatParams {
   request_photo?: boolean;
 }
 
-// ─── Popups ───────────────────────────────────────────────────────────────────
 export interface PopupButton {
   id?: string;
   type?: 'default' | 'ok' | 'close' | 'cancel' | 'destructive';
@@ -249,7 +240,6 @@ export interface DownloadFileParams {
   file_name: string;
 }
 
-// ─── Safe Area ────────────────────────────────────────────────────────────────
 export interface SafeAreaInset {
   top: number;
   bottom: number;
@@ -257,9 +247,7 @@ export interface SafeAreaInset {
   right: number;
 }
 
-// ─── Web App ──────────────────────────────────────────────────────────────────
 export interface TgWebApp {
-  // Core data
   initData: string;
   initDataUnsafe: {
     user?: TgUser;
@@ -279,8 +267,6 @@ export interface TgWebApp {
     chat_instance?: string;
     signature?: string;
   };
-
-  // Display
   version: string;
   platform: string;
   colorScheme: 'light' | 'dark';
@@ -291,114 +277,67 @@ export interface TgWebApp {
   headerColor: string;
   backgroundColor: string;
   bottomBarColor: string;
-
-  // State flags
   isActive?: boolean;
   isFullscreen?: boolean;
   isOrientationLocked?: boolean;
   isClosingConfirmationEnabled: boolean;
   isVerticalSwipesEnabled: boolean;
-
-  // Safe areas
   safeAreaInset?: SafeAreaInset;
   contentSafeAreaInset?: SafeAreaInset;
-
-  // UI Components
   MainButton: MainButton;
   SecondaryButton?: SecondaryButton;
   BackButton: BackButton;
   SettingsButton?: SettingsButton;
-
-  // Hardware & Sensors
   HapticFeedback: HapticFeedback;
   Accelerometer?: Accelerometer;
   DeviceOrientation?: DeviceOrientation;
   Gyroscope?: Gyroscope;
-
-  // Storage
   CloudStorage: CloudStorage;
   DeviceStorage?: CloudStorage;
   SecureStorage?: CloudStorage;
-
-  // Managers
   LocationManager?: LocationManager;
   BiometricManager?: BiometricManager;
-
-  // Lifecycle
   ready: () => void;
   expand: () => void;
   close: () => void;
-
-  // Colors
   setHeaderColor: (color: string) => void;
   setBackgroundColor: (color: string) => void;
   setBottomBarColor?: (color: string) => void;
-
-  // Swipes & Closing
   enableVerticalSwipes?: () => void;
   disableVerticalSwipes?: () => void;
   enableClosingConfirmation?: () => void;
   disableClosingConfirmation?: () => void;
-
-  // Fullscreen
   requestFullscreen?: () => void;
   exitFullscreen?: () => void;
-
-  // Communication
   sendData: (data: string) => void;
   switchInlineQuery: (query: string, chooseChatTypes?: Array<'users' | 'bots' | 'groups' | 'channels'>) => void;
-
-  // Navigation
   openLink: (url: string, options?: { try_instant_view?: boolean; try_browser?: boolean }) => void;
   openTelegramLink: (url: string) => void;
   openInvoice: (url: string, callback?: (status: 'paid' | 'cancelled' | 'failed' | 'pending') => void) => void;
-
-  // Sharing
   shareToStory?: (mediaUrl: string, params?: StoryShareParams) => void;
   shareMessage?: (msgId: string, callback?: (success: boolean) => void) => void;
-
-  // Emoji
   setEmojiStatus?: (customEmojiId: string, params?: EmojiStatusParams, callback?: (success: boolean) => void) => void;
   requestEmojiStatusAccess?: (callback?: (granted: boolean) => void) => void;
-
-  // Files
   downloadFile?: (params: DownloadFileParams, callback?: (accepted: boolean) => void) => void;
-
-  // Keyboard
   hideKeyboard?: () => void;
-
-  // Popups & Dialogs
   showPopup: (params: PopupParams, callback?: (buttonId: string) => void) => void;
   showAlert: (message: string, callback?: () => void) => void;
   showConfirm: (message: string, callback?: (confirmed: boolean) => void) => void;
   showScanQrPopup: (params: ScanQrPopupParams, callback?: (text: string) => void) => void;
   closeScanQrPopup: () => void;
-
-  // Clipboard
   readTextFromClipboard?: (callback?: (text: string) => void) => void;
-
-  // Permissions
   requestWriteAccess?: (callback?: (granted: boolean) => void) => void;
   requestContact?: (callback?: (shared: boolean) => void) => void;
   requestChat?: (params: RequestChatParams, callback?: (success: boolean) => void) => void;
-
-  // Home Screen
   addToHomeScreen?: () => void;
   checkHomeScreenStatus?: (callback?: (status: 'unsupported' | 'unknown' | 'added' | 'missed') => void) => void;
-
-  // Boost
   requestWriteAccess2?: (callback?: (granted: boolean) => void) => void;
   shareToStoryV2?: (params: StoryShareParams & { media_url: string }) => void;
-
-  // Events
   onEvent: (eventType: WebAppEventType | string, eventHandler: (...args: unknown[]) => void) => void;
   offEvent: (eventType: WebAppEventType | string, eventHandler: (...args: unknown[]) => void) => void;
-
-  // Version check
   isVersionAtLeast: (version: string) => boolean;
 }
 
-// ─── Events ───────────────────────────────────────────────────────────────────
 export type WebAppEventType =
   | 'themeChanged'
   | 'mainButtonClicked'
@@ -446,7 +385,6 @@ export type WebAppEventType =
   | 'biometricAuthRequested'
   | 'biometricTokenUpdated';
 
-// ─── Global Declaration ───────────────────────────────────────────────────────
 declare global {
   interface Window {
     Telegram?: { WebApp?: TgWebApp };
