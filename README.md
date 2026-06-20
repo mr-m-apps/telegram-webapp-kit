@@ -1,3 +1,4 @@
+```markdown
 # telegram-webapp-kit
 
 Full-featured Telegram Mini App SDK for React / Next.js.  
@@ -13,7 +14,7 @@ npm install @mr-m/telegram-webapp-kit
 pnpm add @mr-m/telegram-webapp-kit
 ```
 
-Add the Telegram script to your `layout.tsx` or `_document.tsx`:
+Add the Telegram script to your layout.tsx or _document.tsx:
 
 ```tsx
 // Next.js App Router — layout.tsx
@@ -36,7 +37,7 @@ export default function RootLayout({ children }) {
 
 ---
 
-## Setup Providers
+Setup Providers
 
 Wrap your app with the providers you need:
 
@@ -50,13 +51,8 @@ import {
 } from '@mr-m/telegram-webapp-kit';
 
 const telegramOptions: TelegramProviderOptions = {
-  langStorageKey: 'my-app-lang',           // localStorage key for saved language
   onUserReady: (user) => {
-    // sync user to your backend
     fetch('/api/user', { method: 'POST', body: JSON.stringify(user) });
-  },
-  onLanguageChange: (lang) => {
-    // e.g. i18n.changeLanguage(lang)
   },
   loadingComponent: <div>Loading…</div>,
   notInTelegramComponent: <div>Open in Telegram</div>,
@@ -75,9 +71,107 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
 ---
 
-## Hooks Reference
+Fullscreen & Safe Areas
 
-### `useTelegram()`
+The FullscreenProvider automatically injects CSS variables for safe areas:
+
+```css
+:root {
+  --tg-safe-area-inset-top: 0px;
+  --tg-safe-area-inset-bottom: 0px;
+  --tg-safe-area-inset-left: 0px;
+  --tg-safe-area-inset-right: 0px;
+
+  --tg-content-safe-area-inset-top: 0px;
+  --tg-content-safe-area-inset-bottom: 0px;
+  --tg-content-safe-area-inset-left: 0px;
+  --tg-content-safe-area-inset-right: 0px;
+}
+```
+
+Base Container
+
+Wrap your app content with the .app-container class to handle safe areas automatically:
+
+```css
+.app-container {
+  position: relative;
+  min-height: 100vh;
+  padding-top: calc(var(--tg-safe-area-inset-top, 0px) + var(--tg-content-safe-area-inset-top, 0px));
+  padding-bottom: calc(var(--tg-safe-area-inset-bottom, 0px) + var(--tg-content-safe-area-inset-bottom, 0px));
+  padding-left: calc(var(--tg-safe-area-inset-left, 0px) + var(--tg-content-safe-area-inset-left, 0px));
+  padding-right: calc(var(--tg-safe-area-inset-right, 0px) + var(--tg-content-safe-area-inset-right, 0px));
+}
+```
+
+Usage in your app
+
+```tsx
+// app/layout.tsx
+import './globals.css';
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <div className="app-container">
+          {children}
+        </div>
+      </body>
+    </html>
+  );
+}
+```
+
+Utility Classes for Fixed Elements
+
+For fixed headers, footers, or floating buttons:
+
+```css
+/* Fixed header */
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding-top: var(--tg-safe-area-inset-top, 0px);
+  z-index: 100;
+}
+
+/* Fixed bottom navigation */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-bottom: var(--tg-safe-area-inset-bottom, 0px);
+  z-index: 100;
+}
+
+/* Floating action button */
+.fab {
+  position: fixed;
+  bottom: calc(20px + var(--tg-safe-area-inset-bottom, 0px));
+  right: calc(20px + var(--tg-safe-area-inset-right, 0px));
+  z-index: 50;
+}
+
+/* Fullscreen content */
+.fullscreen-content {
+  position: fixed;
+  top: var(--tg-safe-area-inset-top, 0px);
+  left: var(--tg-safe-area-inset-left, 0px);
+  right: var(--tg-safe-area-inset-right, 0px);
+  bottom: var(--tg-safe-area-inset-bottom, 0px);
+}
+```
+
+---
+
+Hooks Reference
+
+useTelegram()
+
 Main context hook — gives you everything from the provider.
 
 ```tsx
@@ -87,37 +181,33 @@ const {
   bypass,        // boolean — dev bypass mode?
   webApp,        // TgWebApp | null — raw WebApp instance
   user,          // TgUser | null
-  language,      // 'en-US' (TMDB-style locale)
-  uiLang,        // 'en' (short code)
   colorScheme,   // 'light' | 'dark'
   startParam,    // string | null
-  isRtl,         // boolean
-  changeLanguage,// (lang: string) => void
 } = useTelegram();
 ```
 
 ---
 
-### `useTelegramBackButton()`
+useTelegramBackButton()
+
 Auto-manages the Back Button based on the current route.
 
 ```tsx
 import { useTelegramBackButton } from '@mr-m/telegram-webapp-kit';
 
-// Basic — uses browser history.back()
 useTelegramBackButton({ pathname });
 
-// Custom back handler
 useTelegramBackButton({
   pathname,
   onBack: () => router.push('/'),
-  hideOnRoot: true, // default: true
+  hideOnRoot: true,
 });
 ```
 
 ---
 
-### `useTelegramMainButton()`
+useTelegramMainButton()
+
 Declarative Main Button control.
 
 ```tsx
@@ -134,7 +224,8 @@ useTelegramMainButton({
 
 ---
 
-### `useTelegramSecondaryButton()`
+useTelegramSecondaryButton()
+
 ```tsx
 useTelegramSecondaryButton({
   text: 'Cancel',
@@ -146,23 +237,26 @@ useTelegramSecondaryButton({
 
 ---
 
-### `useTelegramSettingsButton()`
+useTelegramSettingsButton()
+
 ```tsx
 useTelegramSettingsButton(() => router.push('/settings'));
 ```
 
 ---
 
-### `useHapticFeedback()`
+useHapticFeedback()
+
 ```tsx
 const haptic = useHapticFeedback();
 
-haptic.impact('medium');       // 'light' | 'medium' | 'heavy' | 'rigid' | 'soft'
-haptic.notification('success');// 'error' | 'success' | 'warning'
+haptic.impact('medium');
+haptic.notification('success');
 haptic.selectionChanged();
 ```
 
 Or use the static shortcut:
+
 ```tsx
 import { haptic } from '@mr-m/telegram-webapp-kit';
 haptic.success();
@@ -170,41 +264,56 @@ haptic.success();
 
 ---
 
-### `useTelegramTheme()`
+useTelegramTheme()
+
 ```tsx
 const { colorScheme, themeParams, isDark } = useTelegramTheme();
 ```
 
 ---
 
-### `useTelegramViewport()`
+useTelegramViewport()
+
 ```tsx
 const { height, stableHeight, isExpanded, expand } = useTelegramViewport();
 ```
 
 ---
 
-### `useTelegramFullscreen()`
+useTelegramFullscreen()
+
 ```tsx
 const { isFullscreen, isSupported, enter, exit, toggle, error } = useTelegramFullscreen();
 ```
 
-Or use `useFullscreen()` from the `FullscreenProvider` for the full context including safe areas.
+Or use useFullscreen() from the FullscreenProvider for the full context including safe areas.
 
 ---
 
-### `useSafeArea()`
+useSafeArea()
+
 ```tsx
 const { safeArea, contentSafeArea } = useSafeArea();
-// safeArea.top, .bottom, .left, .right — in pixels
+```
 
-// CSS variables are also set automatically:
-// --tg-safe-area-inset-top, --tg-content-safe-area-inset-bottom, etc.
+CSS variables are set automatically:
+
+```css
+--tg-safe-area-inset-top: 0px;
+--tg-safe-area-inset-bottom: 0px;
+--tg-safe-area-inset-left: 0px;
+--tg-safe-area-inset-right: 0px;
+
+--tg-content-safe-area-inset-top: 0px;
+--tg-content-safe-area-inset-bottom: 0px;
+--tg-content-safe-area-inset-left: 0px;
+--tg-content-safe-area-inset-right: 0px;
 ```
 
 ---
 
-### `useCloudStorage()`
+useCloudStorage()
+
 Promise-based wrappers over Telegram CloudStorage.
 
 ```tsx
@@ -219,7 +328,8 @@ const keys = await storage.getKeys();
 
 ---
 
-### `useAccelerometer()` / `useGyroscope()` / `useDeviceOrientation()`
+useAccelerometer() / useGyroscope() / useDeviceOrientation()
+
 ```tsx
 const { x, y, z, isStarted, start, stop } = useAccelerometer({
   refreshRate: 50,
@@ -236,7 +346,8 @@ const { alpha, beta, gamma, absolute } = useDeviceOrientation({
 
 ---
 
-### `useBiometric()`
+useBiometric()
+
 ```tsx
 const { isAvailable, biometricType, init, requestAccess, authenticate } = useBiometric();
 
@@ -247,35 +358,40 @@ const { authenticated, token } = await authenticate('Confirm your identity');
 
 ---
 
-### `useLocation()`
+useLocation()
+
 ```tsx
 const { isAvailable, isGranted, init, getLocation, openSettings } = useLocation();
 
 await init();
 const loc = await getLocation();
-// loc.latitude, loc.longitude, loc.altitude, etc.
 ```
 
 ---
 
-### `useHomeScreen()`
+useHomeScreen()
+
 ```tsx
 const { addToHomeScreen, checkStatus } = useHomeScreen();
-const status = await checkStatus(); // 'added' | 'missed' | 'unknown' | 'unsupported'
+const status = await checkStatus();
 ```
 
 ---
 
-### `useIsActive()`
+useIsActive()
+
 Tracks whether the Mini App is currently active (foreground).
+
 ```tsx
 const isActive = useIsActive();
 ```
 
 ---
 
-### `useTelegramEvent()`
+useTelegramEvent()
+
 Subscribe to any raw Telegram event.
+
 ```tsx
 useTelegramEvent('themeChanged', () => {
   console.log('Theme changed!');
@@ -284,7 +400,7 @@ useTelegramEvent('themeChanged', () => {
 
 ---
 
-## Utility Functions
+Utility Functions
 
 ```tsx
 import {
@@ -298,21 +414,16 @@ import {
   getRawUserData,
   openExternalLink,
   openTelegramLink,
-  tgLangToTmdb,
-  tgLangToUi,
-  isRtlLang,
-  SUPPORTED_LANGS,
   haptic,
-  cloudStorage,     // Promise-based static helpers
-  dialog,           // Promise-based alert/confirm/popup
+  cloudStorage,
+  dialog,
   readClipboard,
   openInvoice,
   scanQr,
-  biometric,        // Static promise helpers
-  location,         // Static promise helpers
+  biometric,
+  location,
 } from '@mr-m/telegram-webapp-kit';
 
-// Examples
 const wa = getWebApp();
 const user = getRawUserData();
 const { displayName, avatarUrl } = getUserInfoWithAvatar();
@@ -328,16 +439,16 @@ const clipboard = await readClipboard();
 
 ---
 
-## Start Param Routing
+Start Param Routing
 
-If you want to handle deep links via `start_param`, use `useTelegramStartParam`:
+Handle deep links via start_param:
 
 ```tsx
 import { useTelegramStartParam } from '@mr-m/telegram-webapp-kit';
 
 function App() {
   const startParam = useTelegramStartParam();
-  
+
   useEffect(() => {
     if (startParam === 'premium') router.push('/upgrade');
   }, [startParam]);
@@ -346,9 +457,9 @@ function App() {
 
 ---
 
-## TypeScript
+TypeScript
 
-All interfaces are exported. The most useful ones:
+All interfaces are exported:
 
 ```tsx
 import type {
@@ -366,11 +477,19 @@ import type {
 
 ---
 
-## Dev Bypass
+Dev Bypass
 
-Outside Telegram, the provider shows `notInTelegramComponent`.  
-In `development` or when `?bypass` is in the URL, it renders normally so you can develop locally.
+Outside Telegram, the provider shows notInTelegramComponent.
+In development or when ?bypass is in the URL, it renders normally so you can develop locally.
 
 ```bash
 http://localhost:3000?bypass
+```
+
+---
+
+License
+
+MIT © mr-m-apps
+
 ```
