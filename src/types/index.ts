@@ -111,6 +111,9 @@ export interface BottomButton {
   offClick(callback: () => void): BottomButton;
 }
 
+export type MainButton = BottomButton;
+export type SecondaryButton = BottomButton;
+
 export interface BackButton {
   is_visible: boolean;
   show(): BackButton;
