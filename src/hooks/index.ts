@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { getWebApp } from '../core';
-import type { TgUser, TgWebApp, WebAppEventType } from '../types';
+import type { TgUser, TgWebApp, WebAppEventType, DownloadFileParams, EmojiStatusParams, RequestChatParams, StoryShareParams } from '../types';
 
 export function useTelegramWebApp(): TgWebApp | null {
   const [wa, setWa] = useState<TgWebApp | null>(null);
@@ -311,6 +311,95 @@ export function useCloudStorage() {
   return { setItem, getItem, getItems, removeItem, getKeys };
 }
 
+export function useDeviceStorage() {
+  const setItem = useCallback((key: string, value: string): Promise<boolean> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.DeviceStorage) return reject(new Error('DeviceStorage not available'));
+      wa.DeviceStorage.setItem(key, value, (err, success) => {
+        if (err) reject(err); else resolve(success);
+      });
+    }), []);
+
+  const getItem = useCallback((key: string): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.DeviceStorage) return reject(new Error('DeviceStorage not available'));
+      wa.DeviceStorage.getItem(key, (err, value) => {
+        if (err) reject(err); else resolve(value);
+      });
+    }), []);
+
+  const removeItem = useCallback((key: string): Promise<boolean> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.DeviceStorage) return reject(new Error('DeviceStorage not available'));
+      wa.DeviceStorage.removeItem(key, (err, success) => {
+        if (err) reject(err); else resolve(success);
+      });
+    }), []);
+
+  const clear = useCallback((): Promise<boolean> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.DeviceStorage) return reject(new Error('DeviceStorage not available'));
+      wa.DeviceStorage.clear((err, success) => {
+        if (err) reject(err); else resolve(success);
+      });
+    }), []);
+
+  return { setItem, getItem, removeItem, clear };
+}
+
+export function useSecureStorage() {
+  const setItem = useCallback((key: string, value: string): Promise<boolean> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.SecureStorage) return reject(new Error('SecureStorage not available'));
+      wa.SecureStorage.setItem(key, value, (err, success) => {
+        if (err) reject(err); else resolve(success);
+      });
+    }), []);
+
+  const getItem = useCallback((key: string): Promise<{ value: string | null; canRestore: boolean }> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.SecureStorage) return reject(new Error('SecureStorage not available'));
+      wa.SecureStorage.getItem(key, (err, value, canRestore) => {
+        if (err) reject(err); else resolve({ value: value ?? null, canRestore });
+      });
+    }), []);
+
+  const removeItem = useCallback((key: string): Promise<boolean> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.SecureStorage) return reject(new Error('SecureStorage not available'));
+      wa.SecureStorage.removeItem(key, (err, success) => {
+        if (err) reject(err); else resolve(success);
+      });
+    }), []);
+
+  const clear = useCallback((): Promise<boolean> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.SecureStorage) return reject(new Error('SecureStorage not available'));
+      wa.SecureStorage.clear((err, success) => {
+        if (err) reject(err); else resolve(success);
+      });
+    }), []);
+
+  const restoreItem = useCallback((key: string): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.SecureStorage) return reject(new Error('SecureStorage not available'));
+      wa.SecureStorage.restoreItem(key, (err, value) => {
+        if (err) reject(err); else resolve(value);
+      });
+    }), []);
+
+  return { setItem, getItem, removeItem, clear, restoreItem };
+}
+
 export function useAccelerometer(options?: { refreshRate?: number; autoStart?: boolean }) {
   const { refreshRate = 100, autoStart = false } = options ?? {};
   const [data, setData] = useState({ x: 0, y: 0, z: 0 });
@@ -508,4 +597,62 @@ export function useIsActive(): boolean {
 
 export function useTelegramStartParam(): string | null {
   return getWebApp()?.initDataUnsafe?.start_param ?? null;
+}
+
+export function useShareToStory() {
+  return useCallback((mediaUrl: string, params?: StoryShareParams) => {
+    const wa = getWebApp();
+    wa?.shareToStory?.(mediaUrl, params);
+  }, []);
+}
+
+export function useShareMessage() {
+  return useCallback((msgId: string): Promise<boolean> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.shareMessage) return reject(new Error('shareMessage not supported'));
+      wa.shareMessage(msgId, resolve);
+    }), []);
+}
+
+export function useSetEmojiStatus() {
+  return useCallback((customEmojiId: string, params?: EmojiStatusParams): Promise<boolean> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.setEmojiStatus) return reject(new Error('setEmojiStatus not supported'));
+      wa.setEmojiStatus(customEmojiId, params, resolve);
+    }), []);
+}
+
+export function useRequestEmojiStatusAccess() {
+  return useCallback((): Promise<boolean> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.requestEmojiStatusAccess) return reject(new Error('requestEmojiStatusAccess not supported'));
+      wa.requestEmojiStatusAccess(resolve);
+    }), []);
+}
+
+export function useDownloadFile() {
+  return useCallback((params: DownloadFileParams): Promise<boolean> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.downloadFile) return reject(new Error('downloadFile not supported'));
+      wa.downloadFile(params, resolve);
+    }), []);
+}
+
+export function useRequestChat() {
+  return useCallback((reqId: string): Promise<boolean> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.requestChat) return reject(new Error('requestChat not supported (Bot API 9.6+ required)'));
+      wa.requestChat(reqId, resolve);
+    }), []);
+}
+
+export function useHideKeyboard() {
+  return useCallback(() => {
+    getWebApp()?.hideKeyboard?.();
+  }, []);
 }
