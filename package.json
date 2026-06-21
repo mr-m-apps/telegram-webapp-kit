@@ -1,6 +1,6 @@
 {
   "name": "@mr-m/telegram-webapp-kit",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Full-featured Telegram Web App SDK for React / Next.js — types, hooks, providers, and utilities",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
