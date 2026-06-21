@@ -83,7 +83,10 @@ export function useTelegramMainButton(options: {
     if (!wa?.MainButton) return;
 
     const cb = () => onClickRef.current();
-    wa.MainButton.onClick(cb);
+    
+    return () => {
+      wa.MainButton.offClick(cb);
+    };
 
     wa.MainButton.setParams({
       text,
@@ -120,7 +123,9 @@ export function useTelegramSecondaryButton(options: {
     if (!wa?.SecondaryButton) return;
 
     const cb = () => onClickRef.current();
-    wa.SecondaryButton.onClick(cb);
+    return () => {
+      wa.SecondaryButton?.offClick(cb);
+    };
 
     wa.SecondaryButton.setParams({
       text,
@@ -551,12 +556,11 @@ export function useLocation() {
       const loc = getWebApp()?.LocationManager;
       if (!loc) return reject(new Error('LocationManager not available'));
       loc.init(() => {
-        if (err) reject(err);
-        else {
+        if (loc) {
           setIsAvailable(loc.is_location_available);
           setIsGranted(loc.is_access_granted);
-          resolve();
         }
+        resolve();
       });
     }), []);
 
