@@ -1,4 +1,4 @@
-import type { TgUser, TgWebApp } from '../types';
+import type { TgUser, TgWebApp, DownloadFileParams, EmojiStatusParams, RequestChatParams, StoryShareParams } from '../types';
 
 export function getWebApp(): TgWebApp | null {
   if (typeof window === 'undefined') return null;
@@ -147,6 +147,100 @@ export const cloudStorage = {
     }),
 };
 
+export const deviceStorage = {
+  setItem: (key: string, value: string): Promise<boolean> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.DeviceStorage) return reject(new Error('DeviceStorage not available'));
+      wa.DeviceStorage.setItem(key, value, (err, success) => {
+        if (err) reject(err);
+        else resolve(success);
+      });
+    }),
+
+  getItem: (key: string): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.DeviceStorage) return reject(new Error('DeviceStorage not available'));
+      wa.DeviceStorage.getItem(key, (err, value) => {
+        if (err) reject(err);
+        else resolve(value);
+      });
+    }),
+
+  removeItem: (key: string): Promise<boolean> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.DeviceStorage) return reject(new Error('DeviceStorage not available'));
+      wa.DeviceStorage.removeItem(key, (err, success) => {
+        if (err) reject(err);
+        else resolve(success);
+      });
+    }),
+
+  clear: (): Promise<boolean> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.DeviceStorage) return reject(new Error('DeviceStorage not available'));
+      wa.DeviceStorage.clear((err, success) => {
+        if (err) reject(err);
+        else resolve(success);
+      });
+    }),
+};
+
+export const secureStorage = {
+  setItem: (key: string, value: string): Promise<boolean> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.SecureStorage) return reject(new Error('SecureStorage not available'));
+      wa.SecureStorage.setItem(key, value, (err, success) => {
+        if (err) reject(err);
+        else resolve(success);
+      });
+    }),
+
+  getItem: (key: string): Promise<{ value: string | null; canRestore: boolean }> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.SecureStorage) return reject(new Error('SecureStorage not available'));
+      wa.SecureStorage.getItem(key, (err, value, canRestore) => {
+        if (err) reject(err);
+        else resolve({ value: value ?? null, canRestore });
+      });
+    }),
+
+  removeItem: (key: string): Promise<boolean> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.SecureStorage) return reject(new Error('SecureStorage not available'));
+      wa.SecureStorage.removeItem(key, (err, success) => {
+        if (err) reject(err);
+        else resolve(success);
+      });
+    }),
+
+  clear: (): Promise<boolean> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.SecureStorage) return reject(new Error('SecureStorage not available'));
+      wa.SecureStorage.clear((err, success) => {
+        if (err) reject(err);
+        else resolve(success);
+      });
+    }),
+
+  restoreItem: (key: string): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const wa = getWebApp();
+      if (!wa?.SecureStorage) return reject(new Error('SecureStorage not available'));
+      wa.SecureStorage.restoreItem(key, (err, value) => {
+        if (err) reject(err);
+        else resolve(value);
+      });
+    }),
+};
+
 export const dialog = {
   alert: (message: string): Promise<void> =>
     new Promise((resolve) => {
@@ -195,6 +289,59 @@ export function scanQr(text?: string): Promise<string> {
       resolve(result);
     });
   });
+}
+
+export function shareToStory(mediaUrl: string, params?: StoryShareParams): void {
+  const wa = getWebApp();
+  wa?.shareToStory?.(mediaUrl, params);
+}
+
+export function shareMessage(msgId: string): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    const wa = getWebApp();
+    if (!wa?.shareMessage) return reject(new Error('shareMessage not supported'));
+    wa.shareMessage(msgId, resolve);
+  });
+}
+
+export function setEmojiStatus(
+  customEmojiId: string,
+  params?: EmojiStatusParams
+): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    const wa = getWebApp();
+    if (!wa?.setEmojiStatus) return reject(new Error('setEmojiStatus not supported'));
+    wa.setEmojiStatus(customEmojiId, params, resolve);
+  });
+}
+
+export function requestEmojiStatusAccess(): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    const wa = getWebApp();
+    if (!wa?.requestEmojiStatusAccess) return reject(new Error('requestEmojiStatusAccess not supported'));
+    wa.requestEmojiStatusAccess(resolve);
+  });
+}
+
+export function downloadFile(params: DownloadFileParams): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    const wa = getWebApp();
+    if (!wa?.downloadFile) return reject(new Error('downloadFile not supported'));
+    wa.downloadFile(params, resolve);
+  });
+}
+
+export function requestChat(reqId: string): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    const wa = getWebApp();
+    if (!wa?.requestChat) return reject(new Error('requestChat not supported (Bot API 9.6+ required)'));
+    wa.requestChat(reqId, resolve);
+  });
+}
+
+export function hideKeyboard(): void {
+  const wa = getWebApp();
+  wa?.hideKeyboard?.();
 }
 
 export const biometric = {
