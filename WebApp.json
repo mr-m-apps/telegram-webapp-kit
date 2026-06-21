@@ -1,0 +1,1448 @@
+{
+  "title": "Telegram WebApp API Complete Reference",
+  "version": "Bot API 9.6+ (2026)",
+  "description": "Comprehensive JSON representation of the Telegram Mini Apps (WebApp) client-side API, covering all documented objects, properties, methods, events, and types based on the latest official documentation.",
+  "main_object": {
+    "name": "Telegram.WebApp",
+    "properties": {
+      "initData": {
+        "type": "string",
+        "description": "Raw initialization data string passed to the Mini App. Use this for server-side validation.",
+        "since": "Bot API 6.0+"
+      },
+      "initDataUnsafe": {
+        "type": "WebAppInitData",
+        "description": "Parsed initialization data object. WARNING: Data from this field should not be trusted directly.",
+        "since": "Bot API 6.0+"
+      },
+      "version": {
+        "type": "string",
+        "description": "Version of the Bot API available in the user's Telegram app.",
+        "since": "Bot API 6.1+"
+      },
+      "platform": {
+        "type": "string",
+        "description": "Platform identifier (e.g., 'ios', 'android', 'tdesktop', 'macos', 'web').",
+        "since": "Bot API 6.4+"
+      },
+      "colorScheme": {
+        "type": "string",
+        "description": "Current color scheme ('light' or 'dark'). Also available as CSS variable var(--tg-color-scheme).",
+        "since": "Bot API 6.0+"
+      },
+      "themeParams": {
+        "type": "ThemeParams",
+        "description": "Current theme settings object.",
+        "since": "Bot API 6.0+"
+      },
+      "isActive": {
+        "type": "boolean",
+        "description": "True if the Mini App is currently active and visible. False if minimized.",
+        "since": "Bot API 8.0+"
+      },
+      "isExpanded": {
+        "type": "boolean",
+        "description": "True if the Mini App is expanded to maximum available height.",
+        "since": "Bot API 6.0+"
+      },
+      "viewportHeight": {
+        "type": "number",
+        "description": "Current viewport height in pixels. Also available as CSS variable var(--tg-viewport-height).",
+        "since": "Bot API 6.0+"
+      },
+      "viewportStableHeight": {
+        "type": "number",
+        "description": "Stable viewport height in pixels. Also available as CSS variable var(--tg-viewport-stable-height).",
+        "since": "Bot API 6.0+"
+      },
+      "headerColor": {
+        "type": "string",
+        "description": "Current header color in #RRGGBB format.",
+        "since": "Bot API 6.1+"
+      },
+      "backgroundColor": {
+        "type": "string",
+        "description": "Current background color in #RRGGBB format.",
+        "since": "Bot API 6.1+"
+      },
+      "bottomBarColor": {
+        "type": "string",
+        "description": "Current bottom bar color in #RRGGBB format. Applied to navigation bar on Android.",
+        "since": "Bot API 7.10+"
+      },
+      "isClosingConfirmationEnabled": {
+        "type": "boolean",
+        "description": "True if confirmation dialog is enabled when closing the Mini App.",
+        "since": "Bot API 6.2+"
+      },
+      "isVerticalSwipesEnabled": {
+        "type": "boolean",
+        "description": "True if vertical swipes to close/minimize are enabled.",
+        "since": "Bot API 7.7+"
+      },
+      "isFullscreen": {
+        "type": "boolean",
+        "description": "True if the Mini App is in fullscreen mode.",
+        "since": "Bot API 8.0+"
+      },
+      "isOrientationLocked": {
+        "type": "boolean",
+        "description": "True if the Mini App's orientation is locked.",
+        "since": "Bot API 8.0+"
+      },
+      "safeAreaInset": {
+        "type": "SafeAreaInset",
+        "description": "System-defined safe area insets accounting for notches, navigation bars, etc.",
+        "since": "Bot API 8.0+"
+      },
+      "contentSafeAreaInset": {
+        "type": "ContentSafeAreaInset",
+        "description": "Safe area for content, avoiding Telegram UI elements.",
+        "since": "Bot API 8.0+"
+      }
+    },
+    "sub_objects": {
+      "BackButton": {
+        "description": "Controls the back button in the Mini App header.",
+        "since": "Bot API 6.1+",
+        "properties": {
+          "isVisible": {
+            "type": "boolean",
+            "description": "Shows whether the button is visible. Set to false by default."
+          }
+        },
+        "methods": {
+          "show": {
+            "description": "Makes the button active and visible.",
+            "returns": "BackButton",
+            "chaining": true
+          },
+          "hide": {
+            "description": "Hides the button.",
+            "returns": "BackButton",
+            "chaining": true
+          },
+          "onClick": {
+            "description": "Sets the button press event handler. Alias for Telegram.WebApp.onEvent('backButtonClicked', callback).",
+            "parameters": ["callback: function"],
+            "returns": "BackButton",
+            "chaining": true
+          },
+          "offClick": {
+            "description": "Removes the button press event handler. Alias for Telegram.WebApp.offEvent('backButtonClicked', callback).",
+            "parameters": ["callback: function"],
+            "returns": "BackButton",
+            "chaining": true
+          }
+        }
+      },
+      "BottomButton": {
+        "description": "Controls a button at the bottom of the Mini App. Replaces MainButton in Bot API 7.10+.",
+        "since": "Bot API 7.10+",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Readonly. Type of the button: 'main' or 'secondary'.",
+            "readonly": true
+          },
+          "text": {
+            "type": "string",
+            "description": "Current button text. Default is 'Continue' for main and 'Cancel' for secondary."
+          },
+          "color": {
+            "type": "string",
+            "description": "Current button color. Set to themeParams.button_color for main and themeParams.bottom_bar_bg_color for secondary."
+          },
+          "textColor": {
+            "type": "string",
+            "description": "Current button text color. Set to themeParams.button_text_color for main and themeParams.button_color for secondary."
+          },
+          "isVisible": {
+            "type": "boolean",
+            "description": "Shows whether the button is visible. Set to false by default."
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Shows whether the button is active. Set to true by default."
+          },
+          "hasShineEffect": {
+            "type": "boolean",
+            "description": "Shows whether the button has a shine effect. Set to false by default.",
+            "since": "Bot API 7.10+"
+          },
+          "position": {
+            "type": "string",
+            "description": "Position of the secondary button. Values: 'left', 'right', 'top', 'bottom'. Default is 'left'. Not defined for main button.",
+            "since": "Bot API 7.10+"
+          },
+          "iconCustomEmojiId": {
+            "type": "string",
+            "description": "Unique identifier of the custom emoji shown before the button text.",
+            "since": "Bot API 9.5+"
+          },
+          "isProgressVisible": {
+            "type": "boolean",
+            "description": "Readonly. Shows whether the button is displaying a loading indicator.",
+            "readonly": true
+          }
+        },
+        "methods": {
+          "setText": {
+            "description": "Sets the button text.",
+            "parameters": ["text: string"],
+            "returns": "BottomButton",
+            "chaining": true
+          },
+          "setParams": {
+            "description": "Sets multiple button parameters at once. Accepts an object with: icon_custom_emoji_id, text, color, text_color, has_shine_effect, position, is_active, is_visible.",
+            "parameters": ["params: object"],
+            "returns": "BottomButton",
+            "chaining": true
+          },
+          "show": {
+            "description": "Makes the button visible. Note: Opening from attachment menu hides main button until user interaction.",
+            "returns": "BottomButton",
+            "chaining": true
+          },
+          "hide": {
+            "description": "Hides the button.",
+            "returns": "BottomButton",
+            "chaining": true
+          },
+          "enable": {
+            "description": "Enables the button.",
+            "returns": "BottomButton",
+            "chaining": true
+          },
+          "disable": {
+            "description": "Disables the button.",
+            "returns": "BottomButton",
+            "chaining": true
+          },
+          "showProgress": {
+            "description": "Shows a loading indicator. By default disables button; pass leaveActive=true to keep it enabled.",
+            "parameters": ["leaveActive: boolean = false"],
+            "returns": "BottomButton",
+            "chaining": true
+          },
+          "hideProgress": {
+            "description": "Hides the loading indicator.",
+            "returns": "BottomButton",
+            "chaining": true
+          },
+          "onClick": {
+            "description": "Sets the button's press event handler. Alias for Telegram.WebApp.onEvent('mainButtonClicked', callback).",
+            "parameters": ["callback: function"],
+            "returns": "BottomButton",
+            "chaining": true
+          },
+          "offClick": {
+            "description": "Removes the button's press event handler. Alias for Telegram.WebApp.offEvent('mainButtonClicked', callback).",
+            "parameters": ["callback: function"],
+            "returns": "BottomButton",
+            "chaining": true
+          }
+        }
+      },
+      "SettingsButton": {
+        "description": "Controls the Settings item in the context menu.",
+        "since": "Bot API 7.0+",
+        "properties": {
+          "isVisible": {
+            "type": "boolean",
+            "description": "Shows whether the context menu item is visible. Set to false by default."
+          }
+        },
+        "methods": {
+          "show": {
+            "description": "Makes the Settings item in context menu visible.",
+            "returns": "SettingsButton",
+            "chaining": true
+          },
+          "hide": {
+            "description": "Hides the Settings item in context menu.",
+            "returns": "SettingsButton",
+            "chaining": true
+          },
+          "onClick": {
+            "description": "Sets the press event handler. Alias for Telegram.WebApp.onEvent('settingsButtonClicked', callback).",
+            "parameters": ["callback: function"],
+            "returns": "SettingsButton",
+            "chaining": true
+          },
+          "offClick": {
+            "description": "Removes the press event handler. Alias for Telegram.WebApp.offEvent('settingsButtonClicked', callback).",
+            "parameters": ["callback: function"],
+            "returns": "SettingsButton",
+            "chaining": true
+          }
+        }
+      },
+      "HapticFeedback": {
+        "description": "Controls haptic feedback on the device.",
+        "since": "Bot API 6.1+",
+        "methods": {
+          "impactOccurred": {
+            "description": "Indicates an impact occurred. Plays appropriate haptics based on style.",
+            "parameters": ["style: 'light' | 'medium' | 'heavy' | 'rigid' | 'soft'"],
+            "returns": "HapticFeedback",
+            "chaining": true
+          },
+          "notificationOccurred": {
+            "description": "Indicates a task or action succeeded, failed, or produced a warning.",
+            "parameters": ["type: 'error' | 'success' | 'warning'"],
+            "returns": "HapticFeedback",
+            "chaining": true
+          },
+          "selectionChanged": {
+            "description": "Indicates the user changed a selection. Do not use when making a selection, only when it changes.",
+            "returns": "HapticFeedback",
+            "chaining": true
+          }
+        }
+      },
+      "CloudStorage": {
+        "description": "Controls cloud storage. Each bot can store up to 1024 items per user.",
+        "since": "Bot API 6.9+",
+        "methods": {
+          "setItem": {
+            "description": "Stores a value in cloud storage. Key: 1-128 chars (A-Z, a-z, 0-9, _, -). Value: 0-4096 chars.",
+            "parameters": ["key: string", "value: string", "callback?: function"],
+            "returns": "CloudStorage",
+            "chaining": true,
+            "callback": {
+              "arguments": ["error: Error | null", "success: boolean"]
+            }
+          },
+          "getItem": {
+            "description": "Retrieves a value from cloud storage.",
+            "parameters": ["key: string", "callback: function"],
+            "returns": "CloudStorage",
+            "chaining": true,
+            "callback": {
+              "arguments": ["error: Error | null", "value: string"]
+            }
+          },
+          "getItems": {
+            "description": "Retrieves multiple values from cloud storage.",
+            "parameters": ["keys: string[]", "callback: function"],
+            "returns": "CloudStorage",
+            "chaining": true,
+            "callback": {
+              "arguments": ["error: Error | null", "values: Record<string, string>"]
+            }
+          },
+          "removeItem": {
+            "description": "Removes a value from cloud storage.",
+            "parameters": ["key: string", "callback?: function"],
+            "returns": "CloudStorage",
+            "chaining": true,
+            "callback": {
+              "arguments": ["error: Error | null", "success: boolean"]
+            }
+          },
+          "removeItems": {
+            "description": "Removes multiple values from cloud storage.",
+            "parameters": ["keys: string[]", "callback?: function"],
+            "returns": "CloudStorage",
+            "chaining": true,
+            "callback": {
+              "arguments": ["error: Error | null", "success: boolean"]
+            }
+          },
+          "getKeys": {
+            "description": "Retrieves all keys stored in cloud storage.",
+            "parameters": ["callback: function"],
+            "returns": "CloudStorage",
+            "chaining": true,
+            "callback": {
+              "arguments": ["error: Error | null", "keys: string[]"]
+            }
+          }
+        }
+      },
+      "BiometricManager": {
+        "description": "Controls biometrics on the device. Must be initialized before use.",
+        "since": "Bot API 7.2+",
+        "properties": {
+          "isInited": {
+            "type": "boolean",
+            "description": "Shows whether biometrics object is initialized."
+          },
+          "isBiometricAvailable": {
+            "type": "boolean",
+            "description": "Shows whether biometrics is available on the current device."
+          },
+          "biometricType": {
+            "type": "string",
+            "description": "Type of biometrics: 'finger', 'face', or 'unknown'."
+          },
+          "isAccessRequested": {
+            "type": "boolean",
+            "description": "Shows whether permission to use biometrics has been requested."
+          },
+          "isAccessGranted": {
+            "type": "boolean",
+            "description": "Shows whether permission to use biometrics has been granted."
+          },
+          "isBiometricTokenSaved": {
+            "type": "boolean",
+            "description": "Shows whether the token is saved in secure storage."
+          },
+          "deviceId": {
+            "type": "string",
+            "description": "Unique device identifier for matching the token to the device."
+          }
+        },
+        "methods": {
+          "init": {
+            "description": "Initializes the BiometricManager object. Must be called before first use.",
+            "parameters": ["callback?: function"],
+            "returns": "BiometricManager",
+            "chaining": true
+          },
+          "requestAccess": {
+            "description": "Requests permission to use biometrics.",
+            "parameters": ["params: BiometricRequestAccessParams", "callback?: function"],
+            "returns": "BiometricManager",
+            "chaining": true,
+            "callback": {
+              "arguments": ["granted: boolean"]
+            }
+          },
+          "authenticate": {
+            "description": "Authenticates the user using biometrics.",
+            "parameters": ["params: BiometricAuthenticateParams", "callback?: function"],
+            "returns": "BiometricManager",
+            "chaining": true,
+            "callback": {
+              "arguments": ["authenticated: boolean", "token?: string"]
+            }
+          },
+          "updateBiometricToken": {
+            "description": "Updates the biometric token. Pass empty string to remove.",
+            "parameters": ["token: string", "callback?: function"],
+            "returns": "BiometricManager",
+            "chaining": true,
+            "callback": {
+              "arguments": ["updated: boolean"]
+            }
+          },
+          "openSettings": {
+            "description": "Opens biometric access settings for bots. Can only be called in response to user interaction.",
+            "returns": "BiometricManager",
+            "chaining": true
+          }
+        }
+      },
+      "Accelerometer": {
+        "description": "Provides access to accelerometer data on the device.",
+        "since": "Bot API 8.0+",
+        "properties": {
+          "isStarted": {
+            "type": "boolean",
+            "description": "Indicates whether accelerometer tracking is currently active."
+          },
+          "x": {
+            "type": "number",
+            "description": "Current acceleration in X-axis (m/s²)."
+          },
+          "y": {
+            "type": "number",
+            "description": "Current acceleration in Y-axis (m/s²)."
+          },
+          "z": {
+            "type": "number",
+            "description": "Current acceleration in Z-axis (m/s²)."
+          }
+        },
+        "methods": {
+          "start": {
+            "description": "Starts tracking accelerometer data.",
+            "parameters": ["params?: AccelerometerStartParams", "callback?: function"],
+            "returns": "Accelerometer",
+            "chaining": true,
+            "callback": {
+              "arguments": ["started: boolean"]
+            }
+          },
+          "stop": {
+            "description": "Stops tracking accelerometer data.",
+            "parameters": ["callback?: function"],
+            "returns": "Accelerometer",
+            "chaining": true,
+            "callback": {
+              "arguments": ["stopped: boolean"]
+            }
+          }
+        }
+      },
+      "DeviceOrientation": {
+        "description": "Provides access to device orientation data.",
+        "since": "Bot API 8.0+",
+        "properties": {
+          "isStarted": {
+            "type": "boolean",
+            "description": "Indicates whether orientation tracking is currently active."
+          },
+          "absolute": {
+            "type": "boolean",
+            "description": "Indicates whether data is provided in absolute values."
+          },
+          "alpha": {
+            "type": "number",
+            "description": "Rotation around Z-axis (radians)."
+          },
+          "beta": {
+            "type": "number",
+            "description": "Rotation around X-axis (radians)."
+          },
+          "gamma": {
+            "type": "number",
+            "description": "Rotation around Y-axis (radians)."
+          }
+        },
+        "methods": {
+          "start": {
+            "description": "Starts tracking device orientation data.",
+            "parameters": ["params?: DeviceOrientationStartParams", "callback?: function"],
+            "returns": "DeviceOrientation",
+            "chaining": true,
+            "callback": {
+              "arguments": ["started: boolean"]
+            }
+          },
+          "stop": {
+            "description": "Stops tracking device orientation data.",
+            "parameters": ["callback?: function"],
+            "returns": "DeviceOrientation",
+            "chaining": true,
+            "callback": {
+              "arguments": ["stopped: boolean"]
+            }
+          }
+        }
+      },
+      "Gyroscope": {
+        "description": "Provides access to gyroscope data on the device.",
+        "since": "Bot API 8.0+",
+        "properties": {
+          "isStarted": {
+            "type": "boolean",
+            "description": "Indicates whether gyroscope tracking is currently active."
+          },
+          "x": {
+            "type": "number",
+            "description": "Current rotation rate around X-axis (rad/s)."
+          },
+          "y": {
+            "type": "number",
+            "description": "Current rotation rate around Y-axis (rad/s)."
+          },
+          "z": {
+            "type": "number",
+            "description": "Current rotation rate around Z-axis (rad/s)."
+          }
+        },
+        "methods": {
+          "start": {
+            "description": "Starts tracking gyroscope data.",
+            "parameters": ["params?: GyroscopeStartParams", "callback?: function"],
+            "returns": "Gyroscope",
+            "chaining": true,
+            "callback": {
+              "arguments": ["started: boolean"]
+            }
+          },
+          "stop": {
+            "description": "Stops tracking gyroscope data.",
+            "parameters": ["callback?: function"],
+            "returns": "Gyroscope",
+            "chaining": true,
+            "callback": {
+              "arguments": ["stopped: boolean"]
+            }
+          }
+        }
+      },
+      "LocationManager": {
+        "description": "Controls location access on the device. Must be initialized before use.",
+        "since": "Bot API 8.0+",
+        "properties": {
+          "isInited": {
+            "type": "boolean",
+            "description": "Shows whether LocationManager has been initialized."
+          },
+          "isLocationAvailable": {
+            "type": "boolean",
+            "description": "Shows whether location services are available on the device."
+          },
+          "isAccessRequested": {
+            "type": "boolean",
+            "description": "Shows whether permission to use location has been requested."
+          },
+          "isAccessGranted": {
+            "type": "boolean",
+            "description": "Shows whether permission to use location has been granted."
+          }
+        },
+        "methods": {
+          "init": {
+            "description": "Initializes LocationManager. Must be called before first use.",
+            "parameters": ["callback?: function"],
+            "returns": "LocationManager",
+            "chaining": true
+          },
+          "getLocation": {
+            "description": "Requests current location data.",
+            "parameters": ["callback: function"],
+            "returns": "LocationManager",
+            "chaining": true,
+            "callback": {
+              "arguments": ["locationData: LocationData | null"]
+            }
+          },
+          "openSettings": {
+            "description": "Opens location access settings. Can only be called in response to user interaction.",
+            "returns": "LocationManager",
+            "chaining": true
+          }
+        }
+      },
+      "DeviceStorage": {
+        "description": "Provides persistent local storage on the user's device. Similar to localStorage. Up to 5 MB per user.",
+        "since": "Bot API 9.0+",
+        "methods": {
+          "setItem": {
+            "description": "Stores a value in local storage.",
+            "parameters": ["key: string", "value: string", "callback?: function"],
+            "returns": "DeviceStorage",
+            "chaining": true,
+            "callback": {
+              "arguments": ["error: Error | null", "success: boolean"]
+            }
+          },
+          "getItem": {
+            "description": "Retrieves a value from local storage.",
+            "parameters": ["key: string", "callback: function"],
+            "returns": "DeviceStorage",
+            "chaining": true,
+            "callback": {
+              "arguments": ["error: Error | null", "value: string"]
+            }
+          },
+          "removeItem": {
+            "description": "Removes a value from local storage.",
+            "parameters": ["key: string", "callback?: function"],
+            "returns": "DeviceStorage",
+            "chaining": true,
+            "callback": {
+              "arguments": ["error: Error | null", "success: boolean"]
+            }
+          },
+          "clear": {
+            "description": "Clears all keys stored in local storage.",
+            "parameters": ["callback?: function"],
+            "returns": "DeviceStorage",
+            "chaining": true,
+            "callback": {
+              "arguments": ["error: Error | null", "success: boolean"]
+            }
+          }
+        }
+      },
+      "SecureStorage": {
+        "description": "Provides secure, encrypted local storage using iOS Keychain or Android Keystore. Up to 10 items per user.",
+        "since": "Bot API 9.0+",
+        "methods": {
+          "setItem": {
+            "description": "Stores an encrypted value in secure storage.",
+            "parameters": ["key: string", "value: string", "callback?: function"],
+            "returns": "SecureStorage",
+            "chaining": true,
+            "callback": {
+              "arguments": ["error: Error | null", "success: boolean"]
+            }
+          },
+          "getItem": {
+            "description": "Retrieves an encrypted value from secure storage. Third argument indicates if key can be restored.",
+            "parameters": ["key: string", "callback: function"],
+            "returns": "SecureStorage",
+            "chaining": true,
+            "callback": {
+              "arguments": ["error: Error | null", "value: string | null", "canRestore: boolean"]
+            }
+          },
+          "removeItem": {
+            "description": "Removes a value from secure storage.",
+            "parameters": ["key: string", "callback?: function"],
+            "returns": "SecureStorage",
+            "chaining": true,
+            "callback": {
+              "arguments": ["error: Error | null", "success: boolean"]
+            }
+          },
+          "clear": {
+            "description": "Clears all keys stored in secure storage.",
+            "parameters": ["callback?: function"],
+            "returns": "SecureStorage",
+            "chaining": true,
+            "callback": {
+              "arguments": ["error: Error | null", "success: boolean"]
+            }
+          },
+          "restoreItem": {
+            "description": "Attempts to restore a key that previously existed on the current device. Prompts user for permission.",
+            "parameters": ["key: string", "callback?: function"],
+            "returns": "SecureStorage",
+            "chaining": true,
+            "callback": {
+              "arguments": ["error: Error | null", "value: string"]
+            }
+          }
+        }
+      }
+    },
+    "methods": [
+      {
+        "name": "isVersionAtLeast",
+        "description": "Checks if the user's app supports a Bot API version equal to or higher than specified.",
+        "parameters": ["version: string"],
+        "returns": "boolean",
+        "since": "Bot API 6.1+"
+      },
+      {
+        "name": "setHeaderColor",
+        "description": "Sets the app header color. Can use #RRGGBB format or keywords 'bg_color', 'secondary_bg_color'.",
+        "parameters": ["color: string"],
+        "since": "Bot API 6.1+"
+      },
+      {
+        "name": "setBackgroundColor",
+        "description": "Sets the app background color. Can use #RRGGBB format or keywords 'bg_color', 'secondary_bg_color'.",
+        "parameters": ["color: string"],
+        "since": "Bot API 6.1+"
+      },
+      {
+        "name": "setBottomBarColor",
+        "description": "Sets the app's bottom bar color. Can use #RRGGBB format or keywords 'bg_color', 'secondary_bg_color', 'bottom_bar_bg_color'.",
+        "parameters": ["color: string"],
+        "since": "Bot API 7.10+"
+      },
+      {
+        "name": "enableClosingConfirmation",
+        "description": "Enables a confirmation dialog when the user tries to close the Mini App.",
+        "since": "Bot API 6.2+"
+      },
+      {
+        "name": "disableClosingConfirmation",
+        "description": "Disables the confirmation dialog when closing the Mini App.",
+        "since": "Bot API 6.2+"
+      },
+      {
+        "name": "enableVerticalSwipes",
+        "description": "Enables vertical swipes to close or minimize the Mini App. Recommended unless conflicting with app gestures.",
+        "since": "Bot API 7.7+"
+      },
+      {
+        "name": "disableVerticalSwipes",
+        "description": "Disables vertical swipes to close or minimize. Useful if app uses conflicting swipe gestures.",
+        "since": "Bot API 7.7+"
+      },
+      {
+        "name": "requestFullscreen",
+        "description": "Requests opening the Mini App in fullscreen mode.",
+        "since": "Bot API 8.0+"
+      },
+      {
+        "name": "exitFullscreen",
+        "description": "Requests exiting fullscreen mode.",
+        "since": "Bot API 8.0+"
+      },
+      {
+        "name": "lockOrientation",
+        "description": "Locks the Mini App's orientation to its current mode (portrait or landscape).",
+        "since": "Bot API 8.0+"
+      },
+      {
+        "name": "unlockOrientation",
+        "description": "Unlocks the Mini App's orientation, allowing it to follow device rotation.",
+        "since": "Bot API 8.0+"
+      },
+      {
+        "name": "addToHomeScreen",
+        "description": "Prompts the user to add the Mini App to the home screen.",
+        "since": "Bot API 8.0+"
+      },
+      {
+        "name": "checkHomeScreenStatus",
+        "description": "Checks if adding to home screen is supported and if the Mini App has already been added.",
+        "parameters": ["callback?: function"],
+        "since": "Bot API 8.0+",
+        "callback": {
+          "arguments": ["status: 'unsupported' | 'unknown' | 'added' | 'missed'"]
+        }
+      },
+      {
+        "name": "onEvent",
+        "description": "Sets an event handler for the Mini App.",
+        "parameters": ["eventType: string", "eventHandler: function"]
+      },
+      {
+        "name": "offEvent",
+        "description": "Removes a previously set event handler.",
+        "parameters": ["eventType: string", "eventHandler: function"]
+      },
+      {
+        "name": "sendData",
+        "description": "Sends data to the bot as a service message (up to 4096 bytes). Only available for Keyboard Button Mini Apps.",
+        "parameters": ["data: string"],
+        "restriction": "Keyboard button Mini Apps only"
+      },
+      {
+        "name": "switchInlineQuery",
+        "description": "Inserts the bot's username and specified inline query in the current chat's input field.",
+        "parameters": ["query: string", "choose_chat_types?: ('users' | 'bots' | 'groups' | 'channels')[]"],
+        "since": "Bot API 6.7+"
+      },
+      {
+        "name": "openLink",
+        "description": "Opens a link in an external browser. Mini App will NOT be closed.",
+        "parameters": ["url: string", "options?: { try_instant_view?: boolean }"],
+        "since": "Bot API 6.1+ (options: Bot API 6.4+)",
+        "restriction": "Must be called in response to user interaction"
+      },
+      {
+        "name": "openTelegramLink",
+        "description": "Opens a telegram link inside the Telegram app. Mini App will NOT be closed (since Bot API 7.0+).",
+        "parameters": ["url: string"],
+        "since": "Bot API 6.1+"
+      },
+      {
+        "name": "openInvoice",
+        "description": "Opens an invoice using the provided link.",
+        "parameters": ["url: string", "callback?: function"],
+        "since": "Bot API 6.1+",
+        "callback": {
+          "arguments": ["status: 'paid' | 'cancelled' | 'failed' | 'pending'"]
+        }
+      },
+      {
+        "name": "shareToStory",
+        "description": "Opens the native story editor with the specified media.",
+        "parameters": ["media_url: string", "params?: StoryShareParams"],
+        "since": "Bot API 7.8+"
+      },
+      {
+        "name": "shareMessage",
+        "description": "Opens a dialog allowing the user to share a PreparedInlineMessage.",
+        "parameters": ["msg_id: string", "callback?: function"],
+        "since": "Bot API 8.0+",
+        "callback": {
+          "arguments": ["success: boolean"]
+        }
+      },
+      {
+        "name": "setEmojiStatus",
+        "description": "Opens a dialog allowing the user to set a custom emoji as their status.",
+        "parameters": ["custom_emoji_id: string", "params?: EmojiStatusParams", "callback?: function"],
+        "since": "Bot API 8.0+",
+        "callback": {
+          "arguments": ["success: boolean"]
+        }
+      },
+      {
+        "name": "requestEmojiStatusAccess",
+        "description": "Shows a native popup requesting permission for the bot to manage user's emoji status.",
+        "parameters": ["callback?: function"],
+        "since": "Bot API 8.0+",
+        "callback": {
+          "arguments": ["granted: boolean"]
+        }
+      },
+      {
+        "name": "downloadFile",
+        "description": "Displays a native popup prompting the user to download a file.",
+        "parameters": ["params: DownloadFileParams", "callback?: function"],
+        "since": "Bot API 8.0+",
+        "callback": {
+          "arguments": ["accepted: boolean"]
+        }
+      },
+      {
+        "name": "hideKeyboard",
+        "description": "Hides the on-screen keyboard if it is currently visible. Does nothing if not active.",
+        "since": "Bot API 9.1+"
+      },
+      {
+        "name": "requestChat",
+        "description": "Opens a dialog allowing the user to select an existing chat or create a new one.",
+        "parameters": ["req_id: string", "callback?: function"],
+        "since": "Bot API 9.6+",
+        "callback": {
+          "arguments": ["success: boolean"]
+        }
+      },
+      {
+        "name": "showPopup",
+        "description": "Shows a native popup described by PopupParams.",
+        "parameters": ["params: PopupParams", "callback?: function"],
+        "since": "Bot API 6.2+",
+        "callback": {
+          "arguments": ["button_id: string | null"]
+        }
+      },
+      {
+        "name": "showAlert",
+        "description": "Shows a simple alert with a 'Close' button.",
+        "parameters": ["message: string", "callback?: function"],
+        "since": "Bot API 6.2+"
+      },
+      {
+        "name": "showConfirm",
+        "description": "Shows a confirmation window with 'OK' and 'Cancel' buttons.",
+        "parameters": ["message: string", "callback?: function"],
+        "since": "Bot API 6.2+",
+        "callback": {
+          "arguments": ["okPressed: boolean"]
+        }
+      },
+      {
+        "name": "showScanQrPopup",
+        "description": "Shows a native popup for scanning a QR code.",
+        "parameters": ["params: ScanQrPopupParams", "callback?: function"],
+        "since": "Bot API 6.4+",
+        "callback": {
+          "arguments": ["text: string"],
+          "note": "Returning true inside callback closes the popup"
+        }
+      },
+      {
+        "name": "closeScanQrPopup",
+        "description": "Closes the native QR code scanner popup.",
+        "since": "Bot API 6.4+"
+      },
+      {
+        "name": "readTextFromClipboard",
+        "description": "Requests text from the clipboard. Only available for Attachment Menu Mini Apps.",
+        "parameters": ["callback?: function"],
+        "since": "Bot API 6.4+",
+        "restriction": "Attachment menu Mini Apps only, in response to user interaction",
+        "callback": {
+          "arguments": ["text: string | null"]
+        }
+      },
+      {
+        "name": "requestWriteAccess",
+        "description": "Shows a native popup requesting permission for the bot to send messages to the user.",
+        "parameters": ["callback?: function"],
+        "since": "Bot API 6.9+",
+        "callback": {
+          "arguments": ["granted: boolean"]
+        }
+      },
+      {
+        "name": "requestContact",
+        "description": "Shows a native popup prompting the user for their phone number.",
+        "parameters": ["callback?: function"],
+        "since": "Bot API 6.9+",
+        "callback": {
+          "arguments": ["shared: boolean"]
+        }
+      },
+      {
+  "name": "requestChat",
+  "description": "Opens a dialog allowing the user to select an existing chat or create a new one.",
+  "parameters": ["req_id: string", "callback?: function"],
+  "since": "Bot API 9.6+",
+  "callback": {
+    "arguments": ["success: boolean"]
+  }
+      }, 
+      {
+        "name": "ready",
+        "description": "Informs Telegram that the Mini App is ready to be displayed. Call as early as possible."
+      },
+      {
+        "name": "expand",
+        "description": "Expands the Mini App to maximum available height."
+      },
+      {
+        "name": "close",
+        "description": "Closes the Mini App."
+      }
+    ],
+    "events": {
+      "activated": {
+        "description": "Triggered when the Mini App becomes active (e.g., opened from minimized state or selected among tabs).",
+        "params": "none",
+        "since": "Bot API 8.0+"
+      },
+      "deactivated": {
+        "description": "Triggered when the Mini App becomes inactive (e.g., minimized or moved to inactive tab).",
+        "params": "none",
+        "since": "Bot API 8.0+"
+      },
+      "themeChanged": {
+        "description": "Triggered when theme settings change. Access new settings via this.themeParams and this.colorScheme.",
+        "params": "none",
+        "since": "Bot API 6.0+"
+      },
+      "viewportChanged": {
+        "description": "Triggered when the visible section of the Mini App changes.",
+        "params": "{ isStateStable: boolean }",
+        "since": "Bot API 6.0+"
+      },
+      "safeAreaChanged": {
+        "description": "Triggered when device safe area insets change.",
+        "params": "none",
+        "since": "Bot API 8.0+"
+      },
+      "contentSafeAreaChanged": {
+        "description": "Triggered when content safe area insets change.",
+        "params": "none",
+        "since": "Bot API 8.0+"
+      },
+      "mainButtonClicked": {
+        "description": "Triggered when the main button is pressed.",
+        "params": "none",
+        "since": "Bot API 6.0+"
+      },
+      "secondaryButtonClicked": {
+        "description": "Triggered when the secondary button is pressed.",
+        "params": "none",
+        "since": "Bot API 7.10+"
+      },
+      "backButtonClicked": {
+        "description": "Triggered when the back button is pressed.",
+        "params": "none",
+        "since": "Bot API 6.1+"
+      },
+      "settingsButtonClicked": {
+        "description": "Triggered when the Settings item in context menu is pressed.",
+        "params": "none",
+        "since": "Bot API 6.1+"
+      },
+      "invoiceClosed": {
+        "description": "Triggered when an opened invoice is closed.",
+        "params": "{ url: string, status: 'paid' | 'cancelled' | 'failed' | 'pending' }",
+        "since": "Bot API 6.1+"
+      },
+      "popupClosed": {
+        "description": "Triggered when a popup is closed.",
+        "params": "{ button_id: string | null }",
+        "since": "Bot API 6.2+"
+      },
+      "qrTextReceived": {
+        "description": "Triggered when the QR code scanner catches a code with text data.",
+        "params": "{ data: string }",
+        "since": "Bot API 6.4+"
+      },
+      "scanQrPopupClosed": {
+        "description": "Triggered when the QR code scanner popup is closed by the user.",
+        "params": "none",
+        "since": "Bot API 7.7+"
+      },
+      "clipboardTextReceived": {
+        "description": "Triggered when text is read from the clipboard.",
+        "params": "{ data: string | null }",
+        "since": "Bot API 6.4+"
+      },
+      "writeAccessRequested": {
+        "description": "Triggered when write permission was requested.",
+        "params": "{ status: 'allowed' | 'cancelled' }",
+        "since": "Bot API 6.9+"
+      },
+      "contactRequested": {
+        "description": "Triggered when the user's phone number was requested.",
+        "params": "{ status: 'sent' | 'cancelled' }",
+        "since": "Bot API 6.9+"
+      },
+      "biometricManagerUpdated": {
+        "description": "Triggered when BiometricManager object changes.",
+        "params": "none",
+        "since": "Bot API 7.2+"
+      },
+      "biometricAuthRequested": {
+        "description": "Triggered when biometric authentication was requested.",
+        "params": "{ isAuthenticated: boolean, biometricToken?: string }",
+        "since": "Bot API 7.2+"
+      },
+      "biometricTokenUpdated": {
+        "description": "Triggered when the biometric token was updated.",
+        "params": "{ isUpdated: boolean }",
+        "since": "Bot API 7.2+"
+      },
+      "fullscreenChanged": {
+        "description": "Triggered when the Mini App enters or exits fullscreen mode.",
+        "params": "none (use this.isFullscreen)",
+        "since": "Bot API 8.0+"
+      },
+      "fullscreenFailed": {
+        "description": "Triggered if a request to enter fullscreen mode fails.",
+        "params": "{ error: 'UNSUPPORTED' | 'ALREADY_FULLSCREEN' }",
+        "since": "Bot API 8.0+"
+      },
+      "homeScreenAdded": {
+        "description": "Triggered when the Mini App is successfully added to the home screen.",
+        "params": "none",
+        "since": "Bot API 8.0+"
+      },
+      "homeScreenChecked": {
+        "description": "Triggered after checking the home screen status.",
+        "params": "{ status: 'unsupported' | 'unknown' | 'added' | 'missed' }",
+        "since": "Bot API 8.0+"
+      },
+      "accelerometerStarted": {
+        "description": "Triggered when accelerometer tracking has started successfully.",
+        "params": "none",
+        "since": "Bot API 8.0+"
+      },
+      "accelerometerStopped": {
+        "description": "Triggered when accelerometer tracking has stopped.",
+        "params": "none",
+        "since": "Bot API 8.0+"
+      },
+      "accelerometerChanged": {
+        "description": "Triggered with specified frequency after start(), sending current accelerometer data.",
+        "params": "none (use this.x, this.y, this.z)",
+        "since": "Bot API 8.0+"
+      },
+      "accelerometerFailed": {
+        "description": "Triggered if a request to start accelerometer tracking fails.",
+        "params": "{ error: 'UNSUPPORTED' }",
+        "since": "Bot API 8.0+"
+      },
+      "deviceOrientationStarted": {
+        "description": "Triggered when device orientation tracking has started successfully.",
+        "params": "none",
+        "since": "Bot API 8.0+"
+      },
+      "deviceOrientationStopped": {
+        "description": "Triggered when device orientation tracking has stopped.",
+        "params": "none",
+        "since": "Bot API 8.0+"
+      },
+      "deviceOrientationChanged": {
+        "description": "Triggered with specified frequency after start(), sending current orientation data.",
+        "params": "none (use this.alpha, this.beta, this.gamma)",
+        "since": "Bot API 8.0+"
+      },
+      "deviceOrientationFailed": {
+        "description": "Triggered if a request to start device orientation tracking fails.",
+        "params": "{ error: 'UNSUPPORTED' }",
+        "since": "Bot API 8.0+"
+      },
+      "gyroscopeStarted": {
+        "description": "Triggered when gyroscope tracking has started successfully.",
+        "params": "none",
+        "since": "Bot API 8.0+"
+      },
+      "gyroscopeStopped": {
+        "description": "Triggered when gyroscope tracking has stopped.",
+        "params": "none",
+        "since": "Bot API 8.0+"
+      },
+      "gyroscopeChanged": {
+        "description": "Triggered with specified frequency after start(), sending current gyroscope data.",
+        "params": "none (use this.x, this.y, this.z)",
+        "since": "Bot API 8.0+"
+      },
+      "gyroscopeFailed": {
+        "description": "Triggered if a request to start gyroscope tracking fails.",
+        "params": "{ error: 'UNSUPPORTED' }",
+        "since": "Bot API 8.0+"
+      },
+      "locationManagerUpdated": {
+        "description": "Triggered when LocationManager object changes.",
+        "params": "none",
+        "since": "Bot API 8.0+"
+      },
+      "locationRequested": {
+        "description": "Triggered when location data is requested.",
+        "params": "{ locationData: LocationData }",
+        "since": "Bot API 8.0+"
+      },
+      "shareMessageSent": {
+        "description": "Triggered when the message is successfully shared.",
+        "params": "none",
+        "since": "Bot API 8.0+"
+      },
+      "shareMessageFailed": {
+        "description": "Triggered if sharing the message fails.",
+        "params": "{ error: 'UNSUPPORTED' | 'MESSAGE_EXPIRED' | 'MESSAGE_SEND_FAILED' | 'USER_DECLINED' | 'UNKNOWN_ERROR' }",
+        "since": "Bot API 8.0+"
+      },
+      "emojiStatusSet": {
+        "description": "Triggered when the emoji status is successfully set.",
+        "params": "none",
+        "since": "Bot API 8.0+"
+      },
+      "emojiStatusFailed": {
+        "description": "Triggered if setting the emoji status fails.",
+        "params": "{ error: 'UNSUPPORTED' | 'SUGGESTED_EMOJI_INVALID' | 'DURATION_INVALID' | 'USER_DECLINED' | 'SERVER_ERROR' | 'UNKNOWN_ERROR' }",
+        "since": "Bot API 8.0+"
+      },
+      "emojiStatusAccessRequested": {
+        "description": "Triggered when emoji status permission was requested.",
+        "params": "{ status: 'allowed' | 'cancelled' }",
+        "since": "Bot API 8.0+"
+      },
+      "fileDownloadRequested": {
+        "description": "Triggered when the user responds to the file download request.",
+        "params": "{ status: 'downloading' | 'cancelled' }",
+        "since": "Bot API 8.0+"
+      }
+    },
+    "types": {
+      "ThemeParams": {
+        "description": "Theme settings object containing current user's theme colors.",
+        "properties": {
+          "bg_color": { "type": "string", "description": "Background color. CSS var: --tg-theme-bg-color" },
+          "text_color": { "type": "string", "description": "Main text color. CSS var: --tg-theme-text-color" },
+          "hint_color": { "type": "string", "description": "Hint text color. CSS var: --tg-theme-hint-color" },
+          "link_color": { "type": "string", "description": "Link color. CSS var: --tg-theme-link-color" },
+          "button_color": { "type": "string", "description": "Button color. CSS var: --tg-theme-button-color" },
+          "button_text_color": { "type": "string", "description": "Button text color. CSS var: --tg-theme-button-text-color" },
+          "secondary_bg_color": { "type": "string", "description": "Secondary background color. CSS var: --tg-theme-secondary-bg-color", "since": "Bot API 6.1+" },
+          "header_bg_color": { "type": "string", "description": "Header background color. CSS var: --tg-theme-header-bg-color", "since": "Bot API 7.0+" },
+          "bottom_bar_bg_color": { "type": "string", "description": "Bottom background color. CSS var: --tg-theme-bottom-bar-bg-color", "since": "Bot API 7.10+" },
+          "accent_text_color": { "type": "string", "description": "Accent text color. CSS var: --tg-theme-accent-text-color", "since": "Bot API 7.0+" },
+          "section_bg_color": { "type": "string", "description": "Section background color. CSS var: --tg-theme-section-bg-color", "since": "Bot API 7.0+" },
+          "section_header_text_color": { "type": "string", "description": "Section header text color. CSS var: --tg-theme-section-header-text-color", "since": "Bot API 7.0+" },
+          "section_separator_color": { "type": "string", "description": "Section separator color. CSS var: --tg-theme-section-separator-color", "since": "Bot API 7.6+" },
+          "subtitle_text_color": { "type": "string", "description": "Subtitle text color. CSS var: --tg-theme-subtitle-text-color", "since": "Bot API 7.0+" },
+          "destructive_text_color": { "type": "string", "description": "Destructive action text color. CSS var: --tg-theme-destructive-text-color", "since": "Bot API 7.0+" }
+        }
+      },
+      "SafeAreaInset": {
+        "description": "System-defined safe area insets.",
+        "properties": {
+          "top": { "type": "number", "description": "Top inset (pixels). CSS var: --tg-safe-area-inset-top" },
+          "bottom": { "type": "number", "description": "Bottom inset (pixels). CSS var: --tg-safe-area-inset-bottom" },
+          "left": { "type": "number", "description": "Left inset (pixels). CSS var: --tg-safe-area-inset-left" },
+          "right": { "type": "number", "description": "Right inset (pixels). CSS var: --tg-safe-area-inset-right" }
+        }
+      },
+      "ContentSafeAreaInset": {
+        "description": "Content-defined safe area insets avoiding Telegram UI elements.",
+        "properties": {
+          "top": { "type": "number", "description": "Top inset (pixels). CSS var: --tg-content-safe-area-inset-top" },
+          "bottom": { "type": "number", "description": "Bottom inset (pixels). CSS var: --tg-content-safe-area-inset-bottom" },
+          "left": { "type": "number", "description": "Left inset (pixels). CSS var: --tg-content-safe-area-inset-left" },
+          "right": { "type": "number", "description": "Right inset (pixels). CSS var: --tg-content-safe-area-inset-right" }
+        }
+      },
+        "WebAppInitData": {
+        "description": "Parsed initialization data object.",
+        "properties": {
+          "query_id": { "type": "string", "description": "Unique session identifier for answerWebAppQuery" },
+          "user": { "type": "WebAppUser", "description": "Current user data" },
+          "receiver": { "type": "WebAppUser", "description": "Chat partner data (private chats only)" },
+          "chat": { "type": "WebAppChat", "description": "Chat data (group/supergroup/channel only)" },
+          "chat_type": { "type": "string", "description": "Chat type: 'sender', 'private', 'group', 'supergroup', 'channel'" },
+          "chat_instance": { "type": "string", "description": "Global chat identifier" },
+          "start_param": { "type": "string", "description": "startattach or startapp parameter from link" },
+          "can_send_after": { "type": "number", "description": "Time in seconds after which a message can be sent" },
+          "auth_date": { "type": "number", "description": "Unix timestamp when form was opened" },
+          "hash": { "type": "string", "description": "Hash for server-side validation" },
+          "signature": { "type": "string", "description": "Signature for third-party validation", "since": "Bot API 8.0+" }
+        }
+      },
+      "WebAppUser": {
+        "description": "User data object.",
+        "properties": {
+          "id": { "type": "number", "description": "Unique user ID (up to 52 bits)" },
+          "is_bot": { "type": "boolean", "description": "True if user is a bot" },
+          "first_name": { "type": "string", "description": "First name" },
+          "last_name": { "type": "string", "description": "Last name (optional)" },
+          "username": { "type": "string", "description": "Username (optional)" },
+          "language_code": { "type": "string", "description": "IETF language tag (optional)" },
+          "is_premium": { "type": "boolean", "description": "True if Telegram Premium user (optional)" },
+          "added_to_attachment_menu": { "type": "boolean", "description": "True if user added bot to attachment menu (optional)" },
+          "allows_write_to_pm": { "type": "boolean", "description": "True if user allowed bot to message them (optional)" },
+          "photo_url": { "type": "string", "description": "URL of user's profile photo (optional)", "since": "Bot API 8.0+" }
+        }
+      },
+      "WebAppChat": {
+        "description": "Chat data object.",
+        "properties": {
+          "id": { "type": "number", "description": "Unique chat ID (up to 52 bits)" },
+          "type": { "type": "string", "description": "Chat type: 'group', 'supergroup', or 'channel'" },
+          "title": { "type": "string", "description": "Chat title" },
+          "username": { "type": "string", "description": "Chat username (optional)" },
+          "photo_url": { "type": "string", "description": "URL of chat photo (optional)" }
+        }
+      },
+      "LocationData": {
+        "description": "Location data object from LocationManager.",
+        "properties": {
+          "latitude": { "type": "number", "description": "Latitude in degrees" },
+          "longitude": { "type": "number", "description": "Longitude in degrees" },
+          "altitude": { "type": "number", "description": "Altitude in meters (null if unavailable)" },
+          "course": { "type": "number", "description": "Direction in degrees (0=N, 90=E, 180=S, 270=W). null if unavailable" },
+          "speed": { "type": "number", "description": "Speed in m/s. null if unavailable" },
+          "horizontal_accuracy": { "type": "number", "description": "Accuracy of lat/long in meters. null if unavailable" },
+          "vertical_accuracy": { "type": "number", "description": "Accuracy of altitude in meters. null if unavailable" },
+          "course_accuracy": { "type": "number", "description": "Accuracy of course in degrees. null if unavailable" },
+          "speed_accuracy": { "type": "number", "description": "Accuracy of speed in m/s. null if unavailable" }
+        }
+      },
+      "PopupParams": {
+        "description": "Parameters for showPopup method.",
+        "properties": {
+          "title": { "type": "string", "description": "Popup title (0-64 chars)", "optional": true },
+          "message": { "type": "string", "description": "Popup message (1-256 chars)", "required": true },
+          "buttons": { "type": "PopupButton[]", "description": "Array of 1-3 buttons. Default: [{type:'close'}]", "optional": true }
+        }
+      },
+      "PopupButton": {
+        "description": "Button in a popup.",
+        "properties": {
+          "id": { "type": "string", "description": "Button identifier (0-64 chars). Returned in callback.", "optional": true, "default": "" },
+          "type": { "type": "string", "description": "Button type: 'default', 'ok', 'close', 'cancel', 'destructive'", "optional": true, "default": "default" },
+          "text": { "type": "string", "description": "Button text (0-64 chars). Required for 'default' and 'destructive' types.", "optional": true }
+        }
+      },
+      "ScanQrPopupParams": {
+        "description": "Parameters for showScanQrPopup method.",
+        "properties": {
+          "text": { "type": "string", "description": "Text under 'Scan QR' heading (0-64 chars)", "optional": true }
+        }
+      },
+      "StoryShareParams": {
+        "description": "Parameters for shareToStory method.",
+        "properties": {
+          "text": { "type": "string", "description": "Caption (0-200 chars regular, 0-2048 for Premium)", "optional": true },
+          "widget_link": { "type": "StoryWidgetLink", "description": "Widget link to include (Premium only)", "optional": true }
+        }
+      },
+      "StoryWidgetLink": {
+        "description": "Widget link in a story.",
+        "properties": {
+          "url": { "type": "string", "description": "URL to include in the story", "required": true },
+          "name": { "type": "string", "description": "Display name (0-48 chars)", "optional": true }
+        }
+      },
+      "EmojiStatusParams": {
+        "description": "Parameters for setEmojiStatus method.",
+        "properties": {
+          "duration": { "type": "number", "description": "Duration in seconds for the status", "optional": true }
+        }
+      },
+      "DownloadFileParams": {
+        "description": "Parameters for downloadFile method.",
+        "properties": {
+          "url": { "type": "string", "description": "HTTPS URL of the file to download", "required": true },
+          "file_name": { "type": "string", "description": "Suggested name for the downloaded file", "required": true }
+        },
+        "note": "Include headers: Content-Disposition: attachment; filename=\"<file_name>\" and Access-Control-Allow-Origin: https://web.telegram.org"
+      },
+      "BiometricRequestAccessParams": {
+        "description": "Parameters for BiometricManager.requestAccess.",
+        "properties": {
+          "reason": { "type": "string", "description": "Reason for biometric access (0-128 chars)", "optional": true }
+        }
+      },
+      "BiometricAuthenticateParams": {
+        "description": "Parameters for BiometricManager.authenticate.",
+        "properties": {
+          "reason": { "type": "string", "description": "Authentication reason (0-128 chars)", "optional": true }
+        }
+      },
+      "AccelerometerStartParams": {
+        "description": "Parameters for Accelerometer.start.",
+        "properties": {
+          "refresh_rate": { "type": "number", "description": "Refresh rate in ms (20-1000). Default: 1000", "optional": true }
+        }
+      },
+      "DeviceOrientationStartParams": {
+        "description": "Parameters for DeviceOrientation.start.",
+        "properties": {
+          "refresh_rate": { "type": "number", "description": "Refresh rate in ms (20-1000). Default: 1000", "optional": true },
+          "need_absolute": { "type": "boolean", "description": "Request absolute orientation data (for compass). Default: false", "optional": true }
+        }
+      },
+      "GyroscopeStartParams": {
+        "description": "Parameters for Gyroscope.start.",
+        "properties": {
+          "refresh_rate": { "type": "number", "description": "Refresh rate in ms (20-1000). Default: 1000", "optional": true }
+        }
+      }
+    }
+  },
+  "changelog": {
+    "Bot API 9.6 (2026)": [
+      "Added requestChat method to WebApp"
+    ],
+    "Bot API 9.5 (2026)": [
+      "Added iconCustomEmojiId to BottomButton"
+    ],
+    "Bot API 9.1 (2025)": [
+      "Added hideKeyboard method"
+    ],
+    "Bot API 9.0 (2025)": [
+      "Added DeviceStorage and SecureStorage"
+    ],
+    "Bot API 8.0 (2024)": [
+      "Added fullscreen mode support",
+      "Added homescreen shortcuts",
+      "Added emoji status features",
+      "Added media sharing (shareMessage)",
+      "Added file download (downloadFile)",
+      "Added LocationManager",
+      "Added Accelerometer, DeviceOrientation, Gyroscope",
+      "Added lock/unlock orientation",
+      "Added isActive, isFullscreen, isOrientationLocked",
+      "Added safeAreaInset, contentSafeAreaInset"
+    ],
+    "Bot API 7.10 (2024)": [
+      "Added SecondaryButton",
+      "Renamed MainButton to BottomButton",
+      "Added bottomBarColor and setBottomBarColor"
+    ],
+    "Bot API 7.8 (2024)": [
+      "Added Main Mini App support",
+      "Added shareToStory method"
+    ],
+    "Bot API 7.7 (2024)": [
+      "Added isVerticalSwipesEnabled, enableVerticalSwipes, disableVerticalSwipes",
+      "Added scanQrPopupClosed event"
+    ],
+    "Bot API 7.6 (2024)": [
+      "Added section_separator_color to ThemeParams"
+    ],
+    "Bot API 7.2 (2024)": [
+      "Added BiometricManager"
+    ],
+    "Bot API 7.0 (2023)": [
+      "Added SettingsButton",
+      "Added new ThemeParams fields",
+      "openTelegramLink no longer closes Mini App"
+    ],
+    "Bot API 6.9 (2023)": [
+      "Added CloudStorage",
+      "Added requestWriteAccess and requestContact",
+      "setHeaderColor now accepts any color"
+    ],
+    "Bot API 6.7 (2023)": [
+      "Added switchInlineQuery",
+      "Added direct link support"
+    ],
+    "Bot API 6.4 (2022)": [
+      "Added platform, openLink options",
+      "Added showScanQrPopup, closeScanQrPopup, readTextFromClipboard"
+    ],
+    "Bot API 6.2 (2022)": [
+      "Added isClosingConfirmationEnabled, enableClosingConfirmation, disableClosingConfirmation",
+      "Added showPopup, showAlert, showConfirm",
+      "Added is_premium to WebAppUser"
+    ],
+    "Bot API 6.1 (2022)": [
+      "Added version, headerColor, backgroundColor",
+      "Added BackButton, HapticFeedback",
+      "Added openLink, openTelegramLink, openInvoice",
+      "Added secondary_bg_color to ThemeParams"
+    ]
+  }
+}
