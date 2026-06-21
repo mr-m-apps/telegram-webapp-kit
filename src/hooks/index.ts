@@ -94,8 +94,9 @@ export function useTelegramMainButton(options: {
       ...(hasShineEffect !== undefined && { hasShineEffect }),
     });
 
-    if (showProgress) wa.MainButton.showProgress();
-    else wa.MainButton.hideProgress();
+    if (showProgress) 
+    wa.MainButton.show_progress();
+    else wa.MainButton.hide_progress();
 
     return () => wa.MainButton.offClick(cb);
   }, [text, isVisible, isActive, color, textColor, hasShineEffect, showProgress]);
@@ -500,9 +501,9 @@ export function useBiometric() {
   useTelegramEvent('biometricManagerUpdated', () => {
     const bio = getWebApp()?.BiometricManager;
     if (!bio) return;
-    setIsInited(bio.isInited);
-    setIsAvailable(bio.isBiometricAvailable);
-    setBiometricType(bio.biometricType);
+    setIsInited(bio.is_inited);
+    setIsAvailable(bio.is_biometric_available);
+    setBiometricType(bio.biometric_type);
   });
 
   const init = useCallback((): Promise<void> =>
@@ -511,8 +512,8 @@ export function useBiometric() {
       if (!bio) return reject(new Error('BiometricManager not available'));
       bio.init(() => {
         setIsInited(true);
-        setIsAvailable(bio.isBiometricAvailable);
-        setBiometricType(bio.biometricType);
+        setIsAvailable(bio.is_biometric_available);
+        setBiometricType(bio.biometric_type);
         resolve();
       });
     }), []);
@@ -541,19 +542,19 @@ export function useLocation() {
   useTelegramEvent('locationManagerUpdated', () => {
     const loc = getWebApp()?.LocationManager;
     if (!loc) return;
-    setIsAvailable(loc.isLocationAvailable);
-    setIsGranted(loc.isAccessGranted);
+    setIsAvailable(loc.is_location_available);
+    setIsGranted(loc.is_access_granted);
   });
 
   const init = useCallback((): Promise<void> =>
     new Promise((resolve, reject) => {
       const loc = getWebApp()?.LocationManager;
       if (!loc) return reject(new Error('LocationManager not available'));
-      loc.init((err) => {
+      loc.init(() => {
         if (err) reject(err);
         else {
-          setIsAvailable(loc.isLocationAvailable);
-          setIsGranted(loc.isAccessGranted);
+          setIsAvailable(loc.is_location_available);
+          setIsGranted(loc.is_access_granted);
           resolve();
         }
       });
