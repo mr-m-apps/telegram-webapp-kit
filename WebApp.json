@@ -951,15 +951,6 @@
         }
       },
       {
-  "name": "requestChat",
-  "description": "Opens a dialog allowing the user to select an existing chat or create a new one.",
-  "parameters": ["req_id: string", "callback?: function"],
-  "since": "Bot API 9.6+",
-  "callback": {
-    "arguments": ["success: boolean"]
-  }
-      }, 
-      {
         "name": "ready",
         "description": "Informs Telegram that the Mini App is ready to be displayed. Call as early as possible."
       },
