@@ -58,7 +58,12 @@ export interface SafeAreaInset {
   right: number;
 }
 
-export interface ContentSafeAreaInset extends SafeAreaInset {}
+export interface ContentSafeAreaInset {
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+}
 
 export interface LocationData {
   latitude: number;
@@ -73,51 +78,41 @@ export interface LocationData {
 }
 
 export interface BottomButtonParams {
+  icon_custom_emoji_id?: string;
   text?: string;
   color?: string;
   text_color?: string;
-  is_visible?: boolean;
-  is_active?: boolean;
   has_shine_effect?: boolean;
   position?: 'left' | 'right' | 'top' | 'bottom';
-  icon_custom_emoji_id?: string;
+  is_active?: boolean;
+  is_visible?: boolean;
 }
 
 export interface BottomButton {
   readonly type: 'main' | 'secondary';
+  icon_custom_emoji_id?: string;
   text: string;
   color: string;
   text_color: string;
   is_visible: boolean;
   is_active: boolean;
-  hasShineEffect: boolean;
-  readonly isProgressVisible: boolean;
+  has_shine_effect: boolean;
+  readonly is_progress_visible: boolean;
   position?: 'left' | 'right' | 'top' | 'bottom';
-  iconCustomEmojiId?: string;
-
   setText(text: string): BottomButton;
   setParams(params: BottomButtonParams): BottomButton;
   show(): BottomButton;
   hide(): BottomButton;
   enable(): BottomButton;
   disable(): BottomButton;
-  showProgress(leaveActive?: boolean): BottomButton;
-  hideProgress(): BottomButton;
+  show_progress(leave_active?: boolean): BottomButton;
+  hide_progress(): BottomButton;
   onClick(callback: () => void): BottomButton;
   offClick(callback: () => void): BottomButton;
 }
 
-export interface MainButton extends BottomButton {
-  readonly type: 'main';
-}
-
-export interface SecondaryButton extends BottomButton {
-  readonly type: 'secondary';
-  position: 'left' | 'right' | 'top' | 'bottom';
-}
-
 export interface BackButton {
-  isVisible: boolean;
+  is_visible: boolean;
   show(): BackButton;
   hide(): BackButton;
   onClick(callback: () => void): BackButton;
@@ -125,7 +120,7 @@ export interface BackButton {
 }
 
 export interface SettingsButton {
-  isVisible: boolean;
+  is_visible: boolean;
   show(): SettingsButton;
   hide(): SettingsButton;
   onClick(callback: () => void): SettingsButton;
@@ -147,13 +142,16 @@ export interface CloudStorage {
   getKeys(callback: (error: Error | null, keys: string[]) => void): CloudStorage;
 }
 
-export interface DeviceStorage extends Omit<CloudStorage, 'getItems' | 'removeItems' | 'getKeys'> {
+export interface DeviceStorage {
+  setItem(key: string, value: string, callback?: (error: Error | null, success: boolean) => void): DeviceStorage;
+  getItem(key: string, callback: (error: Error | null, value: string) => void): DeviceStorage;
+  removeItem(key: string, callback?: (error: Error | null, success: boolean) => void): DeviceStorage;
   clear(callback?: (error: Error | null, success: boolean) => void): DeviceStorage;
 }
 
 export interface SecureStorage {
   setItem(key: string, value: string, callback?: (error: Error | null, success: boolean) => void): SecureStorage;
-  getItem(key: string, callback: (error: Error | null, value: string | null, canRestore: boolean) => void): SecureStorage;
+  getItem(key: string, callback: (error: Error | null, value: string | null, can_restore: boolean) => void): SecureStorage;
   removeItem(key: string, callback?: (error: Error | null, success: boolean) => void): SecureStorage;
   clear(callback?: (error: Error | null, success: boolean) => void): SecureStorage;
   restoreItem(key: string, callback?: (error: Error | null, value: string) => void): SecureStorage;
@@ -164,11 +162,10 @@ export interface AccelerometerStartParams {
 }
 
 export interface Accelerometer {
-  isStarted: boolean;
+  is_started: boolean;
   x: number;
   y: number;
   z: number;
-
   start(params?: AccelerometerStartParams, callback?: (started: boolean) => void): Accelerometer;
   stop(callback?: (stopped: boolean) => void): Accelerometer;
 }
@@ -179,12 +176,11 @@ export interface DeviceOrientationStartParams {
 }
 
 export interface DeviceOrientation {
-  isStarted: boolean;
+  is_started: boolean;
   absolute: boolean;
   alpha: number;
   beta: number;
   gamma: number;
-
   start(params?: DeviceOrientationStartParams, callback?: (started: boolean) => void): DeviceOrientation;
   stop(callback?: (stopped: boolean) => void): DeviceOrientation;
 }
@@ -194,11 +190,10 @@ export interface GyroscopeStartParams {
 }
 
 export interface Gyroscope {
-  isStarted: boolean;
+  is_started: boolean;
   x: number;
   y: number;
   z: number;
-
   start(params?: GyroscopeStartParams, callback?: (started: boolean) => void): Gyroscope;
   stop(callback?: (stopped: boolean) => void): Gyroscope;
 }
@@ -212,14 +207,13 @@ export interface BiometricAuthenticateParams {
 }
 
 export interface BiometricManager {
-  isInited: boolean;
-  isBiometricAvailable: boolean;
-  biometricType: 'finger' | 'face' | 'unknown';
-  isAccessRequested: boolean;
-  isAccessGranted: boolean;
-  isBiometricTokenSaved: boolean;
-  deviceId: string;
-
+  is_inited: boolean;
+  is_biometric_available: boolean;
+  biometric_type: 'finger' | 'face' | 'unknown';
+  is_access_requested: boolean;
+  is_access_granted: boolean;
+  is_biometric_token_saved: boolean;
+  device_id: string;
   init(callback?: () => void): BiometricManager;
   requestAccess(params: BiometricRequestAccessParams, callback?: (granted: boolean) => void): BiometricManager;
   authenticate(params: BiometricAuthenticateParams, callback?: (authenticated: boolean, token?: string) => void): BiometricManager;
@@ -228,11 +222,10 @@ export interface BiometricManager {
 }
 
 export interface LocationManager {
-  isInited: boolean;
-  isLocationAvailable: boolean;
-  isAccessRequested: boolean;
-  isAccessGranted: boolean;
-
+  is_inited: boolean;
+  is_location_available: boolean;
+  is_access_requested: boolean;
+  is_access_granted: boolean;
   init(callback?: () => void): LocationManager;
   getLocation(callback: (locationData: LocationData | null) => void): LocationManager;
   openSettings(): LocationManager;
@@ -323,82 +316,67 @@ export interface TgWebApp {
   isOrientationLocked: boolean;
   safeAreaInset: SafeAreaInset;
   contentSafeAreaInset: ContentSafeAreaInset;
-
-  MainButton: MainButton;
-  SecondaryButton?: SecondaryButton;
+  MainButton: BottomButton;
+  SecondaryButton?: BottomButton;
   BackButton: BackButton;
   SettingsButton?: SettingsButton;
-
   HapticFeedback: HapticFeedback;
   CloudStorage: CloudStorage;
   DeviceStorage?: DeviceStorage;
   SecureStorage?: SecureStorage;
-
   Accelerometer?: Accelerometer;
   DeviceOrientation?: DeviceOrientation;
   Gyroscope?: Gyroscope;
   LocationManager?: LocationManager;
   BiometricManager?: BiometricManager;
-
   isVersionAtLeast(version: string): boolean;
-
   setHeaderColor(color: string): void;
   setBackgroundColor(color: string): void;
   setBottomBarColor(color: string): void;
-
   enableClosingConfirmation(): void;
   disableClosingConfirmation(): void;
   enableVerticalSwipes(): void;
   disableVerticalSwipes(): void;
-
   requestFullscreen(): void;
   exitFullscreen(): void;
   lockOrientation(): void;
   unlockOrientation(): void;
-
   addToHomeScreen(): void;
   checkHomeScreenStatus(callback?: (status: 'unsupported' | 'unknown' | 'added' | 'missed') => void): void;
-
   ready(): void;
   expand(): void;
   close(): void;
-
   sendData(data: string): void;
   switchInlineQuery(query: string, choose_chat_types?: Array<'users' | 'bots' | 'groups' | 'channels'>): void;
-
   openLink(url: string, options?: { try_instant_view?: boolean }): void;
   openTelegramLink(url: string): void;
   openInvoice(url: string, callback?: (status: 'paid' | 'cancelled' | 'failed' | 'pending') => void): void;
-
   shareToStory(media_url: string, params?: StoryShareParams): void;
   shareMessage(msg_id: string, callback?: (success: boolean) => void): void;
-
   setEmojiStatus(custom_emoji_id: string, params?: EmojiStatusParams, callback?: (success: boolean) => void): void;
   requestEmojiStatusAccess(callback?: (granted: boolean) => void): void;
-
   downloadFile(params: DownloadFileParams, callback?: (accepted: boolean) => void): void;
   hideKeyboard(): void;
-
+  requestChat(req_id: string, callback?: (success: boolean) => void): void;
   showPopup(params: PopupParams, callback?: (button_id: string | null) => void): void;
   showAlert(message: string, callback?: () => void): void;
   showConfirm(message: string, callback?: (okPressed: boolean) => void): void;
-
   showScanQrPopup(params: ScanQrPopupParams, callback?: (text: string) => void): void;
   closeScanQrPopup(): void;
-
   readTextFromClipboard(callback?: (text: string | null) => void): void;
-
   requestWriteAccess(callback?: (granted: boolean) => void): void;
   requestContact(callback?: (shared: boolean) => void): void;
-  requestChat(params: RequestChatParams, callback?: (success: boolean) => void): void;
-
   onEvent(eventType: string, eventHandler: (...args: any[]) => void): void;
   offEvent(eventType: string, eventHandler: (...args: any[]) => void): void;
 }
 
 export type WebAppEventType =
+  | 'activated'
+  | 'deactivated'
   | 'themeChanged'
   | 'viewportChanged'
+  | 'safeAreaChanged'
+  | 'contentSafeAreaChanged'
   | 'mainButtonClicked'
   | 'secondaryButtonClicked'
   | 'backButtonClicked'
@@ -410,22 +388,13 @@ export type WebAppEventType =
   | 'clipboardTextReceived'
   | 'writeAccessRequested'
   | 'contactRequested'
-  | 'activated'
-  | 'deactivated'
-  | 'safeAreaChanged'
-  | 'contentSafeAreaChanged'
+  | 'biometricManagerUpdated'
+  | 'biometricAuthRequested'
+  | 'biometricTokenUpdated'
   | 'fullscreenChanged'
   | 'fullscreenFailed'
   | 'homeScreenAdded'
   | 'homeScreenChecked'
-  | 'emojiStatusSet'
-  | 'emojiStatusFailed'
-  | 'emojiStatusAccessRequested'
-  | 'shareMessageSent'
-  | 'shareMessageFailed'
-  | 'fileDownloadRequested'
-  | 'locationManagerUpdated'
-  | 'locationRequested'
   | 'accelerometerStarted'
   | 'accelerometerStopped'
   | 'accelerometerChanged'
@@ -438,9 +407,14 @@ export type WebAppEventType =
   | 'gyroscopeStopped'
   | 'gyroscopeChanged'
   | 'gyroscopeFailed'
-  | 'biometricManagerUpdated'
-  | 'biometricAuthRequested'
-  | 'biometricTokenUpdated';
+  | 'locationManagerUpdated'
+  | 'locationRequested'
+  | 'shareMessageSent'
+  | 'shareMessageFailed'
+  | 'emojiStatusSet'
+  | 'emojiStatusFailed'
+  | 'emojiStatusAccessRequested'
+  | 'fileDownloadRequested';
 
 declare global {
   interface Window {
