@@ -64,6 +64,39 @@ export function useTelegramBackButton(options?: {
   }, [pathname, onBack, hideOnRoot]);
 }
 
+export function useTelegramSecondaryButton(options: {
+  text: string;
+  onClick: () => void;
+  isVisible?: boolean;
+  isActive?: boolean;
+  position?: 'left' | 'right' | 'top' | 'bottom';
+  color?: string;
+  textColor?: string;
+}) {
+  const { text, onClick, isVisible = true, isActive = true, position, color, textColor } = options;
+  const onClickRef = useRef(onClick);
+  onClickRef.current = onClick;
+
+  useEffect(() => {
+    const wa = getWebApp();
+    if (!wa?.SecondaryButton) return;
+
+    const cb = () => onClickRef.current();
+    wa.SecondaryButton.onClick(cb);
+
+    wa.SecondaryButton.setParams({
+      text,
+      is_visible: isVisible,
+      is_active: isActive,
+      ...(position && { position }),
+      ...(color && { color }),
+      ...(textColor && { text_color: textColor }),
+    });
+
+    return () => { wa?.SecondaryButton?.offClick(cb); };
+  }, [text, isVisible, isActive, position, color, textColor]);
+}
+
 export function useTelegramMainButton(options: {
   text: string;
   onClick: () => void;
@@ -83,10 +116,7 @@ export function useTelegramMainButton(options: {
     if (!wa?.MainButton) return;
 
     const cb = () => onClickRef.current();
-    
-    return () => {
-      wa.MainButton.offClick(cb);
-    };
+    wa.MainButton.onClick(cb);
 
     wa.MainButton.setParams({
       text,
@@ -97,47 +127,11 @@ export function useTelegramMainButton(options: {
       ...(hasShineEffect !== undefined && { hasShineEffect }),
     });
 
-    if (showProgress) 
-    wa.MainButton.show_progress();
+    if (showProgress) wa.MainButton.show_progress();
     else wa.MainButton.hide_progress();
 
-    return () => wa.MainButton.offClick(cb);
+    return () => { wa?.MainButton?.offClick(cb); };
   }, [text, isVisible, isActive, color, textColor, hasShineEffect, showProgress]);
-}
-
-export function useTelegramSecondaryButton(options: {
-  text: string;
-  onClick: () => void;
-  isVisible?: boolean;
-  isActive?: boolean;
-  position?: 'left' | 'right' | 'top' | 'bottom';
-  color?: string;
-  textColor?: string;
-}) {
-  const { text, onClick, isVisible = true, isActive = true, position, color, textColor } = options;
-  const onClickRef = useRef(onClick);
-  onClickRef.current = onClick;
-
-  useEffect(() => {
-    const wa = getWebApp();
-    if (!wa?.SecondaryButton) return;
-
-    const cb = () => onClickRef.current();
-    return () => {
-      wa.SecondaryButton?.offClick(cb);
-    };
-
-    wa.SecondaryButton.setParams({
-      text,
-      is_visible: isVisible,
-      is_active: isActive,
-      ...(position && { position }),
-      ...(color && { color }),
-      ...(textColor && { text_color: textColor }),
-    });
-
-    return () => wa.SecondaryButton?.offClick(cb);
-  }, [text, isVisible, isActive, position, color, textColor]);
 }
 
 export function useTelegramSettingsButton(onSettings: () => void) {
