@@ -260,7 +260,7 @@ export const dialog = {
     new Promise((resolve) => {
       const wa = getWebApp();
       if (!wa) { resolve(''); return; }
-      wa.showPopup(params, resolve);
+      wa.showPopup(params, (button_id) => resolve(button_id ?? ''));
     }),
 };
 
